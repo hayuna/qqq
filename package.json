@@ -1,0 +1,33 @@
+{
+  "name": "site-provisioner",
+  "version": "1.0.0",
+  "description": "Site provisioner repository",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src",
+    "dev": "nodemon src",
+    "test": "jest --",
+    "test:watch": "jest --watchAll",
+    "test:coverage": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@ssh.code.roche.com:gigya-team/site-provisioner.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/node": "^7.14.2",
+    "@babel/preset-env": "^7.14.4",
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "jest": "^27.0.3",
+    "supertest": "^6.1.3"
+  }
+}
