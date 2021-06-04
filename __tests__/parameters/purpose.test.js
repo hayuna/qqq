@@ -11,7 +11,6 @@ describe('createSite', () => {
                         dataCenter: 'US',
                         language: 'en',
                         countryCode: 'AU',
-                        system: 'australian-english',
                         userKey: 'testUserKey',
                         secret: 'test-secret',
                         system: 'AEM',
