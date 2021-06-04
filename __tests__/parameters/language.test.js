@@ -1,62 +1,63 @@
 import supertest from 'supertest';
-import app from '../src/app';
+import app from '../../src/app';
 
 describe('createSite', () => {
     describe('POST /createSite', () => {
-        
-        describe('when each parameters are correct', () => {
-            it('should return OK', async () => {
+        describe('when language does not exist', () => {
+            it('should fail with invalid language', async () => {
                 const res = await supertest(app)
                     .post('/createSite')
                     .send({
                         dataCenter: 'US',
                         countryCode: 'AU',
-                        language: 'en',
                         system: 'AEM',
                         userKey: 'testUserKey',
                         secret: 'test-secret'
                     })
-                    .expect(200)
-                expect(res.body).toMatchObject({
-                    message: 'OK'
-                });
-            });    
-        });
-
-        describe('when there is no parameters', () => {
-            it('should fail with invalid values', async () => {
-                const res = await supertest(app)
-                    .post('/createSite')
                     .expect(400)
                 expect(res.body).toMatchObject({
                     invalidValues: [
-                        "dataCenter is required",
-                        "countryCode is required",
-                        "language is required",
-                        "system is required",
-                        "userKey is required",
-                        "secret is required"
+                        "language is required"
                     ]
                 });
-            });
+            });    
         });
-        describe('when parameter is forbidden', () => {
-            it('should fail with incorrect parameters', async () => {
+        describe('when language has incorrect type', () => {
+            it('should fail with invalid language', async () => {
                 const res = await supertest(app)
                     .post('/createSite')
                     .send({
                         dataCenter: 'US',
-                        language: 'en',
+                        language: true,
                         countryCode: 'AU',
                         system: 'AEM',
                         userKey: 'testUserKey',
-                        secret: 'test-secret',
-                        incorrect: true,
+                        secret: 'test-secret'
                     })
                     .expect(400)
                 expect(res.body).toMatchObject({
-                    incorrectParameters: [
-                        "incorrect"
+                    invalidValues: [
+                        "language must be one of [array, string]"
+                    ]
+                });
+            });    
+        });
+        describe('when language has more than 5 characters', () => {
+            it('should fail with invalid language', async () => {
+                const res = await supertest(app)
+                    .post('/createSite')
+                    .send({
+                        dataCenter: 'US',
+                        language: 'australian-english',
+                        countryCode: 'AU',
+                        system: 'AEM',
+                        userKey: 'testUserKey',
+                        secret: 'test-secret'
+                    })
+                    .expect(400)
+                expect(res.body).toMatchObject({
+                    invalidValues: [
+                        "language length must be less than or equal to 5 characters long"
                     ]
                 });
             });    
