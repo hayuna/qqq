@@ -50,6 +50,8 @@ Start the server
 | `language` | `string(5) or array of string(5)` | Yes |  |
 | `system` | `string(10)` | Yes |  |
 | `purpose` | `string(15)` | No |  |
+| `userKey` | `string` | Yes |  |
+| `secret` | `string` | Yes |  |
 #### Responses
 ##### SUCCESS
 ```json
