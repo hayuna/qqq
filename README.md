@@ -45,7 +45,7 @@ Start the server
 #### Parameters
 | Name | Data Type | Required | Additional info |
 | :--- | :--- | :--- | :--- |
-| `dataCenter` | `string` | Yes | Available values (EN, US, CH, RU) |
+| `dataCenter` | `string` | Yes | Available values (EN, US, CN, RU) |
 | `countryCode` | `string(10)` | Yes |  |
 | `language` | `string(5) or array of string(5)` | Yes |  |
 | `system` | `string(10)` | Yes |  |

@@ -4,5 +4,10 @@
   "transform": {
     "^.+\\.js$": "babel-jest"
   },
-  "testRegex": "((\\.|/*.)(test))\\.js?$"
+  "testRegex": "((\\.|/*.)(test))\\.js?$",
+  "collectCoverageFrom": [
+    "src/**/*.js",
+    "!src/controller.js",
+    "!src/index.js"
+  ]
 }

@@ -2,7 +2,7 @@ import Joi from 'joi';
 
 export const schema = Joi
   .object({
-    dataCenter: Joi.string().valid('EU', 'US', 'CH', 'RU').required(),
+    dataCenter: Joi.string().valid('EU', 'US', 'CN', 'RU').required(),
     countryCode: Joi.string().max(10).required(),
     language: Joi.alternatives().try(Joi.array().items(Joi.string().max(5)), Joi.string().max(5)).required(),
     system: Joi.string().max(10).required(),

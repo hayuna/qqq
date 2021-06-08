@@ -1,37 +1,28 @@
 export default {
-    SANDBOX: {
+    DEV: {
         partnerId: '2287542',
         parentApiKey: {
-            EU: '3_nCwS3TE9I5eMlk9RI_FMqzCbmbd5SW_a2tvF1_d9g-SNYnc5g16bTwZVHvd515vq', 
-            US: '3_cUCYzkV3NsKYwkZoHPo9pv1SkPGnm0C2zYS2ErFAXq-fmXsOfqvIn9PVnrFOlh-c', 
-            CH: '', 
-            RU: ''
-        }
-    },
-    DEV: {
-        partnerId: '',
-        parentApiKey: {
-            EU: '', 
-            US: '', 
-            CH: '', 
+            EU: '3_YYGtcNT2312QTAlvvaSuPUTl9nEnowZllOXXylK34x6AKSFbeg3yA4bi6awkPBQH', 
+            US: '3_OK3wmx7y5qghXVUHkjrKLkIX001QoI_yaybabDNoaF4gTljQIE8PSzbdUp7BW5rF', 
+            CN: '', 
             RU: ''
         }
     },
     TEST: {
-        partnerId: '',
+        partnerId: '2287542',
         parentApiKey: {
-            EU: '', 
-            US: '', 
-            CH: '', 
+            EU: '3_SGFt-o_CoMas7PyIEYE0V1kX7PlMCo01heEyWC_LK36wmslmN4exvQqbMwxAB-SV', 
+            US: '3_BweJbJvjMeDpPYZaKs11kl5wDa-ocsRm3rOcoV-N293mMsHMzXag1FpqNJdADWJn', 
+            CN: '', 
             RU: ''
         }
     },
     PROD: {
-        partnerId: '',
+        partnerId: '2287542',
         parentApiKey: {
-            EU: '', 
-            US: '', 
-            CH: '', 
+            EU: '3_f4vwh9jtLRQ0xB3i_doKBNlPrSOwhDNuRCs_kRgS7FAME1hoa-EyQcfYF1uuaHQT', 
+            US: '3_khtgWS6CfD-BFmGyHFmrpseS0uIAsLaCNlAHztko7s94UfIkEi7Rl3od4a0248At', 
+            CN: '', 
             RU: ''
         }
     },

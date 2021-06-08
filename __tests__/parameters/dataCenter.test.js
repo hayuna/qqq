@@ -5,7 +5,7 @@ describe('createSite', () => {
     describe('POST /createSite', () => {
         describe('when dataCenter has incorrect value', () => {
             it('should fail with invalid dataCenter', async () => {
-                const res = await supertest(app)
+                await supertest(app)
                     .post('/createSite')
                     .send({
                         dataCenter: 'DC',
@@ -15,17 +15,20 @@ describe('createSite', () => {
                         userKey: 'testUserKey',
                         secret: 'test-secret'
                     })
-                    .expect(400)
-                expect(res.body).toMatchObject({
-                    invalidValues: [
-                        "dataCenter must be one of [EU, US, CH, RU]"
-                    ]
-                });
+                    .expect(response => {
+                        expect(response.status).toBe(400)
+                        expect(response.body).toMatchObject({
+                            invalidValues: [
+                                "dataCenter must be one of [EU, US, CN, RU]"
+                            ]
+                        });
+        
+                    })
             });    
         });
         describe('when dataCenter does not exist', () => {
             it('should fail with missing dataCenter', async () => {
-                const res = await supertest(app)
+                await supertest(app)
                     .post('/createSite')
                     .send({
                         countryCode: 'AU',
@@ -34,13 +37,15 @@ describe('createSite', () => {
                         userKey: 'testUserKey',
                         secret: 'test-secret'
                     })
-                    .expect(400)
-                expect(res.body).toMatchObject({
-                    invalidValues: [
-                        "dataCenter is required"
-                    ]
-                });
-            });    
+                    .expect(response => {
+                        expect(response.status).toBe(400)
+                        expect(response.body).toMatchObject({
+                            invalidValues: [
+                                "dataCenter is required"
+                            ]
+                        })
+                    })
+            });
         });
     });
 });

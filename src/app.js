@@ -25,4 +25,8 @@ app.use((err, _req, res, _next) => {
   res.status(500).json({ message: 'Internal server error' });
 });
 
+process.on('unhandledRejection', (reason, promise) => {
+  console.log(reason)
+});
+
 export default app;

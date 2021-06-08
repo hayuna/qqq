@@ -5,7 +5,7 @@ describe('createSite', () => {
     describe('POST /createSite', () => {
         describe('when purpose has more than 15 characters', () => {
             it('should fail with invalid purpose', async () => {
-                const res = await supertest(app)
+                await supertest(app)
                     .post('/createSite')
                     .send({
                         dataCenter: 'US',
@@ -16,12 +16,14 @@ describe('createSite', () => {
                         system: 'AEM',
                         purpose: 'very-long-purpose-to-do-smart-things'
                     })
-                    .expect(400)
-                expect(res.body).toMatchObject({
-                    invalidValues: [
-                        "purpose length must be less than or equal to 15 characters long"
-                    ]
-                });
+                    .expect(response => {
+                        expect(response.status).toBe(400)
+                        expect(response.body).toMatchObject({
+                            invalidValues: [
+                                "purpose length must be less than or equal to 15 characters long"
+                            ]
+                        })
+                    })
             });    
         });
     });
