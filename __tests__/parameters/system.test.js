@@ -5,7 +5,7 @@ describe('createSite', () => {
     describe('POST /createSite', () => {
         describe('when system does not exist', () => {
             it('should fail with invalid system', async () => {
-                const res = await supertest(app)
+                await supertest(app)
                     .post('/createSite')
                     .send({
                         dataCenter: 'US',
@@ -14,17 +14,19 @@ describe('createSite', () => {
                         userKey: 'testUserKey',
                         secret: 'test-secret'
                     })
-                    .expect(400)
-                expect(res.body).toMatchObject({
-                    invalidValues: [
-                        "system is required"
-                    ]
-                });
+                    .expect(response => {
+                        expect(response.status).toBe(400)
+                        expect(response.body).toMatchObject({
+                            invalidValues: [
+                                "system is required"
+                            ]
+                        })
+                    })
             });    
         });
         describe('when system has more than 10 characters', () => {
             it('should fail with invalid system', async () => {
-                const res = await supertest(app)
+                await supertest(app)
                     .post('/createSite')
                     .send({
                         dataCenter: 'US',
@@ -34,12 +36,14 @@ describe('createSite', () => {
                         userKey: 'testUserKey',
                         secret: 'test-secret'
                     })
-                    .expect(400)
-                expect(res.body).toMatchObject({
-                    invalidValues: [
-                        "system length must be less than or equal to 10 characters long"
-                    ]
-                });
+                    .expect(response => {
+                        expect(response.status).toBe(400)
+                        expect(response.body).toMatchObject({
+                            invalidValues: [
+                                "system length must be less than or equal to 10 characters long"
+                            ]
+                        })
+                    })
             });    
         });
     });

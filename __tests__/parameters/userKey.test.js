@@ -5,7 +5,7 @@ describe('createSite', () => {
     describe('POST /createSite', () => {
         describe('when userKey does not exist', () => {
             it('should fail with invalid userKey', async () => {
-                const res = await supertest(app)
+                await supertest(app)
                     .post('/createSite')
                     .send({
                         dataCenter: 'US',
@@ -14,12 +14,14 @@ describe('createSite', () => {
                         system: 'AEM',
                         secret: 'test-secret'
                     })
-                    .expect(400)
-                expect(res.body).toMatchObject({
-                    invalidValues: [
-                        "userKey is required"
-                    ]
-                });
+                    .expect(response => {
+                        expect(response.status).toBe(400)
+                        expect(response.body).toMatchObject({
+                            invalidValues: [
+                                "userKey is required"
+                            ]
+                        })
+                    })
             });    
         });
     });
