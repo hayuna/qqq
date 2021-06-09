@@ -1,4 +1,8 @@
 export default {
+    MASTER_TEMPLATE: {
+        partnerId: '77075621',
+        apiKey: '3_AJ2U75CHTxuS0P0wL9_d7og_KAGY1MPnKKXioIKzJBf_931YgBnRKis35gmy8MtU',
+    },
     DEV: {
         partnerId: '2287542',
         parentApiKey: {

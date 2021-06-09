@@ -13,8 +13,18 @@ export const dataCenterInURL = (dataCenter) => {
 }
 
 export const createDomainName = (environment, body) => {
-    console.log('1/3 Generating domain name')
+    console.log('1/10 Generating domain name')
     const purpose = body.purpose
-    console.log('1/3 Domain name was generated')
+    console.log('2/10 Domain name was generated')
     return `${environment}_${body.dataCenter}_${body.countryCode}${purpose ? '_'+purpose : ''}`.toLowerCase();
 };
+
+export const replaceVariablesInWebSDK = (webSDK, body) => {
+    const variables = {
+      'COUNTRY_CODE': body.countryCode,
+    }
+    Object.entries(variables).forEach(([key, value]) => {
+      webSDK = webSDK.replace(`[[${key}]]`, `'${value}'`);
+    })
+    return webSDK
+}
