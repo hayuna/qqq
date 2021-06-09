@@ -1,4 +1,3 @@
-
 # Gigya Site Provisioner
 
 Tool for create new sites in Gigya Console and copy configuration
@@ -80,5 +79,5 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
 | `404` | `NOT FOUND`|
 | `500` | `INTERNAL SERVER ERROR`|
 
-## Test Coverage (88.89%)
+## Test Coverage (81.63%)
 
