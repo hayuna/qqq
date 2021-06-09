@@ -3,27 +3,6 @@ import app from "../src/app";
 
 describe("createSite", () => {
   describe("POST /createSite", () => {
-    describe("when each parameters are correct", () => {
-      it("should return OK", async () => {
-          await supertest(app)
-            .post("/createSite")
-            .send({
-              dataCenter: "US",
-              countryCode: "AU",
-              language: "en",
-              system: "AEM",
-              userKey: "testUserKey",
-              secret: "test-secret",
-            })
-            .expect((response) => {
-              expect(response.status).toBe(200);
-              expect(response.body).toMatchObject({
-                message: "OK",
-              });
-            });
-      });
-    });
-
     describe("when there is no parameters", () => {
       it("should fail with invalid values", async () => {
           await supertest(app)
