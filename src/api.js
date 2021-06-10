@@ -2,6 +2,9 @@ import axios from "axios";
 import { dataCenterInURL } from "./utils.js";
 
 export const api = async (data, body, url) => {
+  data.append("secret", body.secret);
+  data.append("userKey", body.userKey);
+
   const config = {
     method: "post",
     url: `https://accounts.${dataCenterInURL(body.dataCenter)}.gigya.com${url}`,

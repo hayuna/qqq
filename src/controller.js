@@ -26,8 +26,6 @@ const create = async (environment, body) => {
 const createDomain = async (environment, siteName, body) => {
   console.log('3/10 Create children apikey')
   const data = new FormData();
-  data.append("secret", body.secret);
-  data.append("userKey", body.userKey);
   data.append("dataCenter", dataCenterConverter(body.dataCenter));
   data.append("partnerID", CONFIG[environment].partnerId);
   data.append("baseDomain", siteName);
@@ -40,8 +38,6 @@ const createDomain = async (environment, siteName, body) => {
 const connectWithParent = async (environment, apiKey, body) => {
   console.log('5/10 Create connection with parent apikey')
   const data = new FormData();
-  data.append("secret", body.secret);
-  data.append("userKey", body.userKey);
   data.append("apiKey", apiKey);
   data.append("siteGroupOwner", CONFIG[environment].parentApiKey[body.dataCenter]);
 
@@ -53,8 +49,6 @@ const connectWithParent = async (environment, apiKey, body) => {
 const getWebSDK = async (body) => {
   console.log('7/10 Retrieve WebSDK from Master Template')
   const data = new FormData();
-  data.append("userKey", body.userKey);
-  data.append("secret", body.secret);
   data.append("apiKey", CONFIG.MASTER_TEMPLATE.apiKey);
   data.append('includeGlobalConf', 'true');
     
@@ -66,8 +60,6 @@ const getWebSDK = async (body) => {
 const setWebSDK = async (masterWebSDK, apiKey, body) => {
   console.log('9/10 Setting WebSDK')
   const data = new FormData();
-  data.append("secret", body.secret);
-  data.append("userKey", body.userKey);
   data.append("apiKey", apiKey);
   
   masterWebSDK = replaceVariablesInWebSDK(masterWebSDK, body)
