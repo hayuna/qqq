@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export const dataCenterConverter = (dataCenter) => {
     switch(dataCenter) {
         case 'EU': return 'eu1';
@@ -27,4 +29,8 @@ export const replaceVariablesInWebSDK = (webSDK, body) => {
       webSDK = webSDK.replace(`[[${key}]]`, `'${value}'`);
     })
     return webSDK
+}
+
+export const compareACLs = (masterACL, environmentACL) => {
+    return _.isEqual(masterACL, environmentACL)
 }

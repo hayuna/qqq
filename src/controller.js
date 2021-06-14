@@ -1,5 +1,10 @@
 import CONFIG from "./config.js";
-import { dataCenterConverter, createDomainName, replaceVariablesInWebSDK } from './utils.js'
+import {
+  dataCenterConverter,
+  createDomainName,
+  replaceVariablesInWebSDK,
+  compareACLs,
+} from "./utils.js";
 import FormData from "form-data";
 import { api } from "./api.js";
 
@@ -21,6 +26,8 @@ const create = async (environment, body) => {
   await connectWithParent(environment, site.apiKey, body)
   const masterWebSDK = await getWebSDK(body)
   await setWebSDK(masterWebSDK.globalConf, site.apiKey, body)
+  const ACLs = await getACLs(body);
+  await setACLs(body, environment)
 }
 
 const createDomain = async (environment, siteName, body) => {
@@ -69,3 +76,58 @@ const setWebSDK = async (masterWebSDK, apiKey, body) => {
   console.log('10/10 WebSDK was set')
   return response
 }
+
+const getACLs = async (body) => {
+  const _admins = await getACL({ aclId: "_admins", body });
+  const developers = await getACL({aclId: 'developers', body})
+  const mulesoft = await getACL({aclId: 'mulesoft', body})
+  const standard_application = await getACL({aclId: 'standard_application', body})
+  return {
+    _admins,
+    developers,
+    mulesoft,
+    standard_application
+  };
+};
+
+const getACL = async ({ aclId, body, environment }) => {
+  const data = new FormData();
+  data.append("aclID", aclId);
+
+  const source = !environment
+    ? CONFIG.MASTER_TEMPLATE.partnerId
+    : CONFIG[environment].partnerId;
+
+  data.append("partnerID", source);
+
+  const ACL = await api(data, body, "/admin.getACL");
+  ACL.name = aclId
+  return ACL;
+};
+
+const setACLs = async (body, environment) => {
+  const _admins = await setACL(body, environment, "_admins");
+  const developers = await setACL(body, environment, 'developers')
+  const mulesoft = await setACL(body, environment, 'mulesoft')
+  const standard_application = await setACL(body, environment, 'standard_application')
+  return {
+    _admins,
+    developers,
+    mulesoft,
+    standard_application
+  };
+};
+
+const setACL = async (body, environment, aclId) => {
+  const masterACL = await getACL({aclId: aclId, body});
+  const siteACL = await getACL({aclId: aclId, body, environment});
+
+  if(compareACLs(masterACL.acl, siteACL.acl)) return;
+  const data = new FormData();
+  data.append("partnerID", CONFIG[environment].partnerId);
+  data.append("aclID", aclId);
+  data.append("acl", JSON.stringify(masterACL.acl));
+  
+  const newACL = await api(data, body, "/admin.setACL");
+  return newACL
+};
