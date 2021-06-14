@@ -4,6 +4,7 @@ import {
   createDomainName,
   replaceVariablesInWebSDK,
   compareACLs,
+  generateCreationDate,
 } from "./utils.js";
 import FormData from "form-data";
 import { api } from "./api.js";
@@ -28,6 +29,7 @@ const create = async (environment, body) => {
   await setWebSDK(masterWebSDK.globalConf, site.apiKey, body)
   const ACLs = await getACLs(body);
   await setACLs(body, environment)
+  const application = await createApplication(domainName, body, environment)
 }
 
 const createDomain = async (environment, siteName, body) => {
@@ -130,4 +132,15 @@ const setACL = async (body, environment, aclId) => {
   
   const newACL = await api(data, body, "/admin.setACL");
   return newACL
+};
+
+const createApplication = async (siteName, body, environment) => {
+  const date = new Date();
+  const data = new FormData();
+  data.append("name", `${siteName}_${body.system}_exp${generateCreationDate(date)}`)
+  data.append("keyType", "highRate")
+  data.append("ownerPartnerId", CONFIG[environment].partnerId)
+  
+  const newApplication = await api(data, body, "/admin.createUserKey");
+  return newApplication
 };

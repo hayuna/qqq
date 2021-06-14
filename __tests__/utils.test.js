@@ -1,4 +1,4 @@
-import { dataCenterConverter, createDomainName, dataCenterInURL, replaceVariablesInWebSDK } from '../src/utils'
+import { dataCenterConverter, createDomainName, dataCenterInURL, replaceVariablesInWebSDK, generateCreationDate, compareACLs } from '../src/utils'
 
 describe('dataCenterConverter', () => {
     it('should return eu1', () => {
@@ -48,5 +48,36 @@ describe('replaceVariablesInWebSDK', () => {
         }
         const webSDK = 'gigya.thisScript.globalConf.countryCode = [[COUNTRY_CODE]];';
         expect(replaceVariablesInWebSDK(webSDK, body)).toBe(`gigya.thisScript.globalConf.countryCode = 'AU';`)
+    })
+})
+
+describe('compareACLs', () => {
+    it('should compare objects with success', () => {
+        const objectA = {
+            test: true
+        }
+        const objectB = {
+            test: true
+        }
+        
+        expect(compareACLs(objectA, objectB)).toBe(true)
+    })
+    
+    it('should fail comparing objects', () => {
+        const objectA = {
+            test: true
+        }
+        const objectB = {
+            test: false
+        }
+
+        expect(compareACLs(objectA, objectB)).toBe(false)
+    })
+})
+
+describe('generateCreationDate', () => {
+    it('should generate date in proper format YYYY-MM-DD', () => {
+        const date = new Date('2021-01-01')
+        expect(generateCreationDate(date)).toBe('2021-01-01')
     })
 })
