@@ -5,6 +5,9 @@ import {
   replaceVariablesInWebSDK,
   compareACLs,
   generateCreationDate,
+  generatePermissionGroupName,
+  errorHandler,
+  delay,
 } from "./utils.js";
 import FormData from "form-data";
 import { api } from "./api.js";
@@ -12,8 +15,8 @@ import { api } from "./api.js";
 export const createSite = async (req, res) => {
   try {
     await create('DEV', req.body)
-    await create('TEST', req.body)
-    await create('PROD', req.body)
+    // await create('TEST', req.body)
+    // await create('PROD', req.body)
     res.json({ message: 'OK' });
   } catch (error) {
     console.log(error)
@@ -23,13 +26,31 @@ export const createSite = async (req, res) => {
 
 const create = async (environment, body) => {
   const domainName = createDomainName(environment, body);
+  
   const site = await createDomain(environment, domainName, body)
-  await connectWithParent(environment, site.apiKey, body)
+  errorHandler(site)
+  
+  const connection = await connectWithParent(environment, site.apiKey, body)
+  errorHandler(connection)
+  
   const masterWebSDK = await getWebSDK(body)
-  await setWebSDK(masterWebSDK.globalConf, site.apiKey, body)
+  errorHandler(masterWebSDK)
+
+  const newWebSDK = await setWebSDK(masterWebSDK.globalConf, site.apiKey, body)
+  errorHandler(newWebSDK)
+
   const ACLs = await getACLs(body);
-  await setACLs(body, environment)
+  errorHandler(ACLs)
+  
+  const newACLs = await setACLs(body, environment)
+  errorHandler(newACLs)
+  
   const application = await createApplication(domainName, body, environment)
+  errorHandler(application)
+
+  const response = await createPermissionGroupRepeater(application, domainName, site, ACLs, environment, body)
+  errorHandler(response.permissionGroup)
+  console.log(response)
 }
 
 const createDomain = async (environment, siteName, body) => {
@@ -137,10 +158,46 @@ const setACL = async (body, environment, aclId) => {
 const createApplication = async (siteName, body, environment) => {
   const date = new Date();
   const data = new FormData();
-  data.append("name", `${siteName}_${body.system}_exp${generateCreationDate(date)}`)
+  data.append("name", `${siteName}_${body.system}_created${generateCreationDate(date)}`)
   data.append("keyType", "highRate")
   data.append("ownerPartnerId", CONFIG[environment].partnerId)
   
   const newApplication = await api(data, body, "/admin.createUserKey");
   return newApplication
 };
+
+const createPermissionGroup = async(application, domainName, apiKey, acl, environment, body) => {
+  const data = new FormData();
+  data.append("partnerID", CONFIG[environment].partnerId)
+  data.append("groupID", generatePermissionGroupName(domainName, body.system))
+  data.append("aclID", acl)
+  
+  data.append("scope", JSON.stringify({
+    allowSites: [apiKey]
+  }))
+  data.append("setUsers", JSON.stringify([application.userKey])) 
+
+  const permissionGroup = await api(data, body, "/admin.createGroup");
+  permissionGroup.name = generatePermissionGroupName(domainName, body.system)
+  return permissionGroup
+} 
+
+const createPermissionGroupRepeater = async (application, domainName, site, ACLs, environment, body) => {
+  let success = false
+  let counter = 0
+  let message = ''
+  let permissionGroup
+  while(!success && counter < 10){
+    await delay(500)
+    permissionGroup = await createPermissionGroup(application.user, domainName, site.apiKey, ACLs.standard_application.name, environment, body)
+    console.log(permissionGroup)
+    if(!permissionGroup.errorCode) { 
+      success = true
+      message = null
+    } else {
+      counter++
+      message = permissionGroup.errorDetails || permissionGroup.errorMessage
+    }            
+  }
+  return {success, counter, message, permissionGroup}
+}
