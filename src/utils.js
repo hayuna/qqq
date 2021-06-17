@@ -43,7 +43,7 @@ export const generateCreationDate = (date) => {
 }
 
 export const generatePermissionGroupName = (domainName, system) => {
-    return `api_${domainName}_${system}`;
+    return `api_${domainName}_${system}`.toLowerCase();
 };
 
 export const errorHandler = (object) => {
