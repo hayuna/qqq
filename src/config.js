@@ -2,6 +2,7 @@ export default {
     MASTER_TEMPLATE: {
         partnerId: '77075621',
         apiKey: '3_AJ2U75CHTxuS0P0wL9_d7og_KAGY1MPnKKXioIKzJBf_931YgBnRKis35gmy8MtU',
+        ACLs: ['_admins', 'developers', 'mulesoft', 'standard_application']
     },
     DEV: {
         partnerId: '2287542',
@@ -10,7 +11,8 @@ export default {
             US: '3_OK3wmx7y5qghXVUHkjrKLkIX001QoI_yaybabDNoaF4gTljQIE8PSzbdUp7BW5rF', 
             CN: '', 
             RU: ''
-        }
+        },
+        ACLs: ['_admins', 'developers', 'mulesoft', 'standard_application']
     },
     TEST: {
         partnerId: '2287542',
@@ -19,7 +21,8 @@ export default {
             US: '3_BweJbJvjMeDpPYZaKs11kl5wDa-ocsRm3rOcoV-N293mMsHMzXag1FpqNJdADWJn', 
             CN: '', 
             RU: ''
-        }
+        },
+        ACLs: ['_admins', 'developers', 'mulesoft', 'standard_application']
     },
     PROD: {
         partnerId: '2287542',
@@ -28,6 +31,7 @@ export default {
             US: '3_khtgWS6CfD-BFmGyHFmrpseS0uIAsLaCNlAHztko7s94UfIkEi7Rl3od4a0248At', 
             CN: '', 
             RU: ''
-        }
+        },
+        ACLs: ['_admins', 'developers', 'mulesoft', 'standard_application']
     },
 }

@@ -15,9 +15,9 @@ export const dataCenterInURL = (dataCenter) => {
 }
 
 export const createDomainName = (environment, body) => {
-    console.log('1/10 Generating domain name')
+    console.log('1/18 Generating domain name')
     const purpose = body.purpose
-    console.log('2/10 Domain name was generated')
+    console.log('2/18 Domain name was generated')
     return `${environment}_${body.dataCenter}_${body.countryCode}${purpose ? '_'+purpose : ''}`.toLowerCase();
 };
 
