@@ -41,3 +41,18 @@ export const generateCreationDate = (date) => {
     const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
     return `${year}-${month}-${day}`
 }
+
+export const generatePermissionGroupName = (domainName, system) => {
+    return `api_${domainName}_${system}`;
+};
+
+export const errorHandler = (object) => {
+    if (object.errorCode) {
+        console.log(object);
+        throw new Error(object.errorDetails || object.errorMessage);
+    }
+};
+
+export const delay = ms => {
+    return new Promise(res => setTimeout(res, ms))
+};
