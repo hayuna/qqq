@@ -54,41 +54,41 @@ const create = async (environment, body) => {
 }
 
 const createDomain = async (environment, siteName, body) => {
-  console.log('3/10 Create children apikey')
+  console.log('3/18 Create children apikey')
   const data = new FormData();
   data.append("dataCenter", dataCenterConverter(body.dataCenter));
   data.append("partnerID", CONFIG[environment].partnerId);
   data.append("baseDomain", siteName);
 
   const response = await api(data, body, '/admin.createSite')
-  console.log('4/10 Children apikey has been created')
+  console.log('4/18 Children apikey has been created')
   return response
 };
 
 const connectWithParent = async (environment, apiKey, body) => {
-  console.log('5/10 Create connection with parent apikey')
+  console.log('5/18 Create connection with parent apikey')
   const data = new FormData();
   data.append("apiKey", apiKey);
   data.append("siteGroupOwner", CONFIG[environment].parentApiKey[body.dataCenter]);
 
   const response = await api(data, body, '/admin.setSiteConfig')
-  console.log('6/10 Connection with parent apikey has been created')
+  console.log('6/18 Connection with parent apikey has been created')
   return response
 };
 
 const getWebSDK = async (body) => {
-  console.log('7/10 Retrieve WebSDK from Master Template')
+  console.log('7/18 Retrieve WebSDK from Master Template')
   const data = new FormData();
   data.append("apiKey", CONFIG.MASTER_TEMPLATE.apiKey);
   data.append('includeGlobalConf', 'true');
     
   const masterConfig = await api(data, body, '/admin.getSiteConfig')
-  console.log('8/10 WebSDK from Master Template was retrieved')
+  console.log('8/18 WebSDK from Master Template was retrieved')
   return masterConfig
 }
 
 const setWebSDK = async (masterWebSDK, apiKey, body) => {
-  console.log('9/10 Setting WebSDK')
+  console.log('9/18 Setting WebSDK')
   const data = new FormData();
   data.append("apiKey", apiKey);
   
@@ -96,24 +96,31 @@ const setWebSDK = async (masterWebSDK, apiKey, body) => {
   data.append('globalConf', masterWebSDK)
   
   const response = await api(data, body, '/admin.setSiteConfig')
-  console.log('10/10 WebSDK was set')
+  console.log('10/18 WebSDK was set')
   return response
 }
 
 const getACLs = async (body) => {
-  const _admins = await getACL({ aclId: "_admins", body });
-  const developers = await getACL({aclId: 'developers', body})
-  const mulesoft = await getACL({aclId: 'mulesoft', body})
-  const standard_application = await getACL({aclId: 'standard_application', body})
-  return {
-    _admins,
-    developers,
-    mulesoft,
-    standard_application
-  };
+  console.log('11/18 Retrieve ACLs from Master Template')
+  const listOfACL = []
+
+  const calls = []
+  CONFIG.MASTER_TEMPLATE.ACLs.forEach((aclId) => {
+    calls.push(getACL({ aclId, body }))
+  })
+
+  const response = await Promise.all(calls)
+
+  response.forEach(ACL => {
+    listOfACL[ACL.name] = ACL
+  })
+  console.log('12/18 ACLs have been retrieved from Master Template')
+
+  return listOfACL;
 };
 
 const getACL = async ({ aclId, body, environment }) => {
+  console.log(`___ Retrieving ${aclId} ACL`)
   const data = new FormData();
   data.append("aclID", aclId);
 
@@ -125,23 +132,24 @@ const getACL = async ({ aclId, body, environment }) => {
 
   const ACL = await api(data, body, "/admin.getACL");
   ACL.name = aclId
+  console.log(`___ ${aclId} ACL has been retrieved`)
   return ACL;
 };
 
 const setACLs = async (body, environment) => {
-  const _admins = await setACL(body, environment, "_admins");
-  const developers = await setACL(body, environment, 'developers')
-  const mulesoft = await setACL(body, environment, 'mulesoft')
-  const standard_application = await setACL(body, environment, 'standard_application')
-  return {
-    _admins,
-    developers,
-    mulesoft,
-    standard_application
-  };
+  console.log(`13/18 Saving ACLs into ${environment}`)
+  const calls = []
+  CONFIG[environment].ACLs.forEach((aclId) => {
+    calls.push(setACL(body, environment, aclId))
+  })
+
+  const response = await Promise.all(calls)
+  console.log(`14/18 ACLs have been saved into ${environment}`)
+  return response;
 };
 
 const setACL = async (body, environment, aclId) => {
+  console.log(`___ Setting ${aclId} ACL into ${environment}`)
   const masterACL = await getACL({aclId: aclId, body});
   const siteACL = await getACL({aclId: aclId, body, environment});
 
@@ -152,10 +160,12 @@ const setACL = async (body, environment, aclId) => {
   data.append("acl", JSON.stringify(masterACL.acl));
   
   const newACL = await api(data, body, "/admin.setACL");
+  console.log(`___ ${aclId} ACL has been saved to ${environment}`)
   return newACL
 };
 
 const createApplication = async (siteName, body, environment) => {
+  console.log(`15/18 Creating application into ${environment}`)
   const date = new Date();
   const data = new FormData();
   data.append("name", `${siteName}_${body.system}_created${generateCreationDate(date)}`)
@@ -163,6 +173,8 @@ const createApplication = async (siteName, body, environment) => {
   data.append("ownerPartnerId", CONFIG[environment].partnerId)
   
   const newApplication = await api(data, body, "/admin.createUserKey");
+  console.log(`16/18 Application has been created in ${environment}`)
+
   return newApplication
 };
 
@@ -183,12 +195,14 @@ const createPermissionGroup = async(application, domainName, apiKey, acl, enviro
 } 
 
 const createPermissionGroupRepeater = async (application, domainName, site, ACLs, environment, body) => {
+  console.log(`17/18 Creating permission group in ${environment}`)
+
   let success = false
   let counter = 0
   let message = ''
   let permissionGroup
-  while(!success && counter < 10){
-    await delay(500)
+  while(!success && counter < 30){
+    await delay(1000)
     permissionGroup = await createPermissionGroup(application.user, domainName, site.apiKey, ACLs.standard_application.name, environment, body)
     console.log(permissionGroup)
     if(!permissionGroup.errorCode) { 
@@ -199,5 +213,8 @@ const createPermissionGroupRepeater = async (application, domainName, site, ACLs
       message = permissionGroup.errorDetails || permissionGroup.errorMessage
     }            
   }
+  success 
+  ? console.log(`18/18 Permission group has been created in ${environment}`)
+  : console.log(`Error during creating Permission group in ${environment}`)
   return {success, counter, message, permissionGroup}
 }
