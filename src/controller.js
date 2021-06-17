@@ -48,6 +48,9 @@ const create = async (environment, body) => {
   const application = await createApplication(domainName, body, environment)
   errorHandler(application)
 
+  const applicationInConsole = await addApplicationToGroup(application.user, environment, body)
+  errorHandler(applicationInConsole)
+
   const response = await createPermissionGroupRepeater(application, domainName, site, ACLs, environment, body)
   errorHandler(response.permissionGroup)
   console.log(response)
@@ -177,6 +180,19 @@ const createApplication = async (siteName, body, environment) => {
 
   return newApplication
 };
+
+const addApplicationToGroup = async (application, environment, body) => {
+  console.log(`___ Adding application to group into ${environment}`)
+  const data = new FormData();
+  data.append("partnerID", CONFIG[environment].partnerId)
+  data.append("groupID", '_no_permissions')
+  data.append("addUsers", JSON.stringify([application.userKey])) 
+
+  const permissionGroup = await api(data, body, "/admin.updateGroup");
+  permissionGroup.name = '_no_permissions'
+  console.log(`___ Application has been added to group into ${environment}`)
+  return permissionGroup
+}
 
 const createPermissionGroup = async(application, domainName, apiKey, acl, environment, body) => {
   const data = new FormData();
