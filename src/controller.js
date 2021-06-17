@@ -15,8 +15,8 @@ import { api } from "./api.js";
 export const createSite = async (req, res) => {
   try {
     await create('DEV', req.body)
-    // await create('TEST', req.body)
-    // await create('PROD', req.body)
+    await create('TEST', req.body)
+    await create('PROD', req.body)
     res.json({ message: 'OK' });
   } catch (error) {
     console.log(error)
