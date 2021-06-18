@@ -1,4 +1,4 @@
-import { dataCenterConverter, createDomainName, dataCenterInURL, replaceVariablesInWebSDK, generateCreationDate, compareACLs } from '../src/utils'
+import { dataCenterConverter, createDomainName, dataCenterInURL, replaceVariablesInWebSDK, generateCreationDate, compareACLs, generatePermissionGroupName } from '../src/utils'
 
 describe('dataCenterConverter', () => {
     it('should return eu1', () => {
@@ -80,4 +80,10 @@ describe('generateCreationDate', () => {
         const date = new Date('2021-01-01')
         expect(generateCreationDate(date)).toBe('2021-01-01')
     })
+})
+
+describe('generatePermissionGroupName', () => {
+    const domainName = 'dev_us_au'
+    const system = 'AEM'
+    expect(generatePermissionGroupName(domainName, system)).toBe('api_dev_us_au_aem')
 })
