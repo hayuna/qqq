@@ -171,7 +171,7 @@ const createApplication = async (siteName, body, environment) => {
   console.log(`15/18 Creating application into ${environment}`)
   const date = new Date();
   const data = new FormData();
-  data.append("name", `${siteName}_${body.system}_created${generateCreationDate(date)}`)
+  data.append("name", `${siteName}_${body.system}_created${generateCreationDate(date)}`.toLowerCase())
   data.append("keyType", "highRate")
   data.append("ownerPartnerId", CONFIG[environment].partnerId)
   
