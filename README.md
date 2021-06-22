@@ -51,6 +51,18 @@ Start the server
 | `purpose` | `string(15)` | No |  |
 | `userKey` | `string` | Yes |  |
 | `secret` | `string` | Yes |  |
+
+#### Endpoint
+```http
+  POST /deleteSite
+```
+#### Parameters
+| Name | Data Type | Required | Additional info |
+| :--- | :--- | :--- | :--- |
+| `apiKeys` | `array of string(5)` | Yes |  |
+| `userKey` | `string` | Yes |  |
+| `secret` | `string` | Yes |  |
+
 #### Responses
 ##### SUCCESS
 ```json
@@ -58,11 +70,17 @@ Start the server
   "message" : string
 }
 ```
-##### FAIL
+##### FAIL IN PARAMETERS
 ```json
 {
   "invalidValues": [string],
   "incorrectParameters": [string]
+}
+```
+##### FAIL IN RESPONSE
+```json
+{
+  "message": string
 }
 ```
 The `message` attribute contains a message OK in case of success.

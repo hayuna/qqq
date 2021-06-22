@@ -12,6 +12,14 @@ export const schema = Joi
   })
   .options({ abortEarly: false })
 
+export const deleteSiteSchema = Joi
+  .object({
+    apiKeys: Joi.array().items(Joi.string()).required(),
+    userKey: Joi.string().required(),
+    secret: Joi.string().required(),
+  })
+  .options({ abortEarly: false })
+
 export const validateBody = (schema) => {
   return async (req, res, next) => {
     try {
