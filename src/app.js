@@ -1,8 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { createSite } from './controller.js';
-import { deleteSite } from './deleteController.js';
-import { schema, deleteSiteSchema, validateBody } from './validators/index.js';
+import { schema, validateBody } from './validators/index.js';
 
 const app = express();
 app.use(express.urlencoded({
@@ -15,12 +14,6 @@ app.post(
   '/createSite', 
   validateBody(schema), 
   createSite
-)
-
-app.post(
-  '/deleteSite', 
-  validateBody(deleteSiteSchema),
-  deleteSite
 )
 
 app.use((_req, res, _next) => {

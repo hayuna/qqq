@@ -52,17 +52,6 @@ Start the server
 | `userKey` | `string` | Yes |  |
 | `secret` | `string` | Yes |  |
 
-#### Endpoint
-```http
-  POST /deleteSite
-```
-#### Parameters
-| Name | Data Type | Required | Additional info |
-| :--- | :--- | :--- | :--- |
-| `apiKeys` | `array of string(5)` | Yes |  |
-| `userKey` | `string` | Yes |  |
-| `secret` | `string` | Yes |  |
-
 #### Responses
 ##### SUCCESS
 ```json
