@@ -218,7 +218,7 @@ const createPermissionGroupRepeater = async (application, domainName, site, ACLs
   let message = ''
   let permissionGroup
   while(!success && counter < 30){
-    await delay(1000)
+    await delay(3000)
     permissionGroup = await createPermissionGroup(application.user, domainName, site.apiKey, ACLs.standard_application.name, environment, body)
     console.log(permissionGroup)
     if(!permissionGroup.errorCode) { 
