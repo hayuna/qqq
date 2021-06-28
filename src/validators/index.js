@@ -19,7 +19,7 @@ export const validateBody = (schema) => {
       next();
     } catch (error) {
       const errors = error.details.reduce((acc, detail) => {
-        detail.message = detail.message.replaceAll(`\"`, '')
+        detail.message = detail.message.replace(/\"/g, '')
         if(detail.message.includes('is not allowed')){
           acc.incorrectParameters.push(detail.path[0])
         } else {
