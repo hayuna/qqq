@@ -22,12 +22,15 @@ export const createDomainName = () => {
 };
 
 export const replaceVariablesInWebSDK = (webSDK) => {
-    const variables = {
-      'COUNTRY_CODE': body.countryCode,
+    webSDK = webSDK.replace(`[[ENV]]`, environment.toLowerCase())
+    if(body.multicountry) {
+        webSDK = webSDK.replace(`[[MULTI_COUNTRY]]`, body.countryCode)
+        webSDK = webSDK.replace(`countryCode: '[[COUNTRY_CODE]]',`, '')
+    } else {
+        webSDK = webSDK.replace(`[[COUNTRY_CODE]]`, body.countryCode)
+        webSDK = webSDK.replace(`multicountry: '[[MULTI_COUNTRY]]',`, '')
     }
-    Object.entries(variables).forEach(([key, value]) => {
-      webSDK = webSDK.replace(`[[${key}]]`, `'${value}'`);
-    })
+
     return webSDK
 }
 

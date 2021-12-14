@@ -51,6 +51,7 @@ Start the server
 | `purpose` | `string(15)` | No |  |
 | `userKey` | `string` | Yes |  |
 | `secret` | `string` | Yes |  |
+| `multicountry` | `boolean` | No | Default `false`|
 
 #### Responses
 ##### SUCCESS
@@ -85,6 +86,3 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
 | `400` | `BAD REQUEST`|
 | `404` | `NOT FOUND`|
 | `500` | `INTERNAL SERVER ERROR`|
-
-## Test Coverage (81.63%)
-
