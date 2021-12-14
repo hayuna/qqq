@@ -14,14 +14,14 @@ export const dataCenterInURL = (dataCenter) => {
     }
 }
 
-export const createDomainName = (environment, body) => {
+export const createDomainName = () => {
     console.log('1/18 Generating domain name')
     const purpose = body.purpose
     console.log('2/18 Domain name was generated')
     return `${environment}_${body.dataCenter}_${body.countryCode}${purpose ? '_'+purpose : ''}`.toLowerCase();
 };
 
-export const replaceVariablesInWebSDK = (webSDK, body) => {
+export const replaceVariablesInWebSDK = (webSDK) => {
     const variables = {
       'COUNTRY_CODE': body.countryCode,
     }
@@ -47,7 +47,7 @@ export const generatePermissionGroupName = (domainName, system) => {
 };
 
 export const errorHandler = (object) => {
-    if (object.errorCode) {
+    if (object?.errorCode) {
         console.log(object);
         throw new Error(object.errorDetails || object.errorMessage);
     }
