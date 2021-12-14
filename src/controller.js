@@ -17,8 +17,8 @@ export const createSite = async (req, res) => {
   try {
     global.body = req.body
     await create('DEV')
-    // await create('TEST')
-    // await create('PROD')
+    await create('TEST')
+    await create('PROD')
     res.json({ message: 'OK' });
   } catch (error) {
     console.log(error)
