@@ -9,8 +9,8 @@ export default {
         order: 2,
         partnerId: '65296976',
         parentApiKey: {
-            EU: '3_YYGtcNT2312QTAlvvaSuPUTl9nEnowZllOXXylK34x6AKSFbeg3yA4bi6awkPBQH', // marek_dev
-            US: '3_7tcdyvdluQicCrENnW3QS8DF2RgqPRwwkHUdbAkPAzT_fFj7oY36azQR2NiEOMDM', // jakub_dev_2 
+            EU: '3_7tcdyvdluQicCrENnW3QS8DF2RgqPRwwkHUdbAkPAzT_fFj7oY36azQR2NiEOMDM', // jakub_dev_2 
+            US: '3_dlD0aX_SsZzjkj_DV5ycjyQeIgAXCPWhsR7aE1C7UPeEz8w2BlgxRQ0scu_qvKXM', // marek_dev
             CN: '', 
             RU: ''
         },

@@ -16,9 +16,10 @@ import { etlController } from "./ETL/controller.js";
 export const createSite = async (req, res) => {
   try {
     global.body = req.body
-    await create('DEV')
-    await create('TEST')
-    await create('PROD')
+    await create('SANDBOX')
+    // await create('DEV')
+    // await create('TEST')
+    // await create('PROD')
     res.json({ message: 'OK' });
   } catch (error) {
     console.log(error)
