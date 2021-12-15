@@ -2,7 +2,7 @@ export default {
     MASTER_TEMPLATE: {
         order: 1,
         partnerId: '77075621',
-        apiKey: '3_AJ2U75CHTxuS0P0wL9_d7og_KAGY1MPnKKXioIKzJBf_931YgBnRKis35gmy8MtU',
+        apiKey: '3_6uMd2qa4YUHDwsc1s3IYA569y57k1DV1TgJqwYmMOZNkmq1gRqBVMAzhVkdEZTuV',
         ACLs: ['_admins', 'developers', 'mulesoft', 'standard_application']
     },
     SANDBOX: {

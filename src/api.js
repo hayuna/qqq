@@ -1,6 +1,6 @@
 import axios from "axios";
 import https from "https";
-import { dataCenterInURL } from "./utils.js";
+import { dataCenterInURL, dataCenterConverter } from "./utils.js";
 
 export const api = async (data, url) => {
   data.append("secret", body.secret);
@@ -37,7 +37,7 @@ export const etlAPI = async (data, url) => {
 
   const config = {
     method: "post",
-    url: `https://idx.${dataCenterInURL(body.dataCenter)}.gigya.com${url}`,
+    url: `https://idx.${dataCenterConverter(body.dataCenter)}.gigya.com${url}`,
     headers: {
       ...data.getHeaders(),
     },
