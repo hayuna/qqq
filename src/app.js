@@ -1,20 +1,23 @@
 import express from 'express';
 import cors from 'cors';
 import { createSite } from './controller.js';
+import { getPartners } from './partners/index.js'
 import { schema, validateBody } from './validators/index.js';
 
 const app = express();
 app.use(express.urlencoded({
-    extended: true
+  extended: true
 }));
 app.use(express.json());
 app.use(cors());
 
 app.post(
-  '/createSite', 
-  validateBody(schema), 
+  '/createSite',
+  validateBody(schema),
   createSite
 )
+
+app.post('/getPartners', getPartners)
 
 app.use((_req, res, _next) => {
   res.status(404).json({ message: 'Not found' });
