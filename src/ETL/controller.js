@@ -7,7 +7,7 @@ const replaceVariables = async (template) => {
   template = template.replaceAll('[[COUNTRY_CODE]]', body.countryCode)
   template = template.replaceAll('[[ACCESS_KEY]]', '<$AWSclientID$>')
   template = template.replaceAll('[[SECRET_KEY]]', '<$AWSSecret$>')
-  template = template.replaceAll('[[ENV]]', environment)
+  template = template.replaceAll('[[ENV]]', environment.toLowerCase())
   template = JSON.parse(template)
   return template
 }
