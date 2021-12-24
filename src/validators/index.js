@@ -10,6 +10,7 @@ export const schema = Joi
     userKey: Joi.string().required(),
     secret: Joi.string().required(),
     multicountry: Joi.boolean().default(false),
+    countryFullname: Joi.string().required()
   })
   .options({ abortEarly: false })
 

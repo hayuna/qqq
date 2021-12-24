@@ -52,6 +52,7 @@ Start the server
 | `userKey` | `string` | Yes |  |
 | `secret` | `string` | Yes |  |
 | `multicountry` | `boolean` | No | Default `false`|
+| `countryFullname` | `string` | Yes |  |
 
 #### Responses
 ##### SUCCESS
