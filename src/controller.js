@@ -10,8 +10,8 @@ import Google from './controllers/Google/index.js'
 export const createSite = async (req, res) => {
   try {
     global.body = req.body
-    // await create('SANDBOX')
-    await create('DEV')
+    await create('SANDBOX')
+    // await create('DEV')
     // await create('TEST')
     // await create('PROD')
     res.json({ message: 'OK' });
