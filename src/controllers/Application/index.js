@@ -5,9 +5,8 @@ import CONFIG from '../../config.js'
 const Application = {
     async create(siteName) {
         console.log(`15/18 Creating application into ${environment}`)
-        const date = new Date();
         const data = new FormData();
-        data.append("name", `${siteName}_${body.system}_created${this.generateCreationDate(date)}`.toLowerCase())
+        data.append("name", `${siteName}_${body.system}_created${this.generateCreationDate()}`.toLowerCase())
         data.append("keyType", "highRate")
         data.append("ownerPartnerId", CONFIG[environment].partnerId)
 
@@ -30,7 +29,8 @@ const Application = {
         return permissionGroup
     },
 
-    generateCreationDate (date) {
+    generateCreationDate () {
+        const date = new Date();
         const year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date);
         const month = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(date);
         const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
