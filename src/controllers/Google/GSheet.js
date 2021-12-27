@@ -40,7 +40,6 @@ const GSheet = {
                 requests
             }
         })
-        console.log({x})
     },
 
     async replaceCells({ fileId, country }) {

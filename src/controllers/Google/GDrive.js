@@ -4,20 +4,6 @@ const drive = google.drive('v3')
 import auth from './auth.js'
 
 const GDrive = {
-    async getFiles(){
-        const filesDEV = await drive.files.list({
-            auth,
-            q: `not trashed and parents= '${config.DEV}'`,
-            fields: ['files(id, name)'],
-            includeItemsFromAllDrives: true,
-            supportsAllDrives: true,
-            corpora: 'drive',
-            driveId: config.SHARED_DRIVE,
-            includeTeamDriveItems: true,
-            pageSize: 300
-        })
-        // console.log(filesDEV.data.files)
-    },
     async createFolder({ name, parent }) {
         const newFolder = await drive.files.create({
             auth,
@@ -29,7 +15,6 @@ const GDrive = {
                 parents: [parent]
             },
         })
-        console.log({newFolder:newFolder.data })
         return newFolder
     },
 
@@ -45,7 +30,6 @@ const GDrive = {
             removeParents: config.TEMPLATE_FOLDER,
             addParents: parent
         })
-        console.log({renamedFile:renamedFile.data })
         return renamedFile
     },
 
@@ -55,7 +39,6 @@ const GDrive = {
             supportsAllDrives: true,
             fileId
         })
-        console.log({copiedFile:copiedFile.data })
         
         return copiedFile
     }
