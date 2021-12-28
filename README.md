@@ -91,9 +91,12 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
 #### MODULE DOCTYPES (Typescript in the future can replace it)
 ##### ACL
 - getAll
+  ```yaml
   params: EMPTY
   response: [] // TO CHECK
+  ```
 - get
+  ```yaml
   params: {
     aclId: string;
     fromMaster: boolean;
@@ -112,15 +115,21 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
     },
     name: string;
   }
+  ```
 - setAll
+  ```yaml
   params: EMPTY
   response: [null,null,null,null] // TO CHECK
+  ```
 - set
+  ```yaml
   params: {
     aclId: string;
   }
   response: {} // TO CHECK
+  ```
 - compareACLs
+  ```yaml
   params: {
     masterACL: {
       _api: {};
@@ -134,8 +143,10 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
     };
   }
   response: boolean;
+  ```
 ##### Application
 - create
+  ```yaml
   params: {
     siteName: string;
   }
@@ -160,7 +171,9 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
     privatePkcs1PemEncodedRsa: string;
     publicPkcs1PemEncodedRsa: string;
   }
+  ```
 - assignToGroup 
+  ```yaml
   params: {
     application: {
       userKey: string;
@@ -179,16 +192,22 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
     time: string;
     name: string;
   }
+  ```
 - generateCreationDate
+  ```yaml
   params: EMPTY
   response: string;
+  ```
 ##### Dataflow
 - replaceVariables
+  ```yaml
   params: {
     template: string;
   }
   response: string;
+  ```
 - create
+  ```yaml
   params: {
     template: string;
   }
@@ -197,7 +216,9 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
     steps: Array;
     description: string;
   };
+  ```
 - setScheduleInit
+  ```yaml
   params: {
     dataflowId: string;
   };
@@ -210,7 +231,9 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
     time: string;
     id: string;
   }
+  ```
 - setSchedule
+  ```yaml
   params: {
     dataflowId: string;
   };
@@ -223,7 +246,9 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
     time: string;
     id: string;
   }
+  ```
 - getAll
+  ```yaml
   params: EMPTY
   response: {
     callId: string;
@@ -246,8 +271,10 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
       updatedByEmail: string;
     }>
   }
+  ```
 ##### Google
 - GDrive.createFolder
+  ```yaml
   params: {
     name: string;
     parent: string;
@@ -260,7 +287,9 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
     teamDriveId: string;
     driveId: string;
   }
+  ```
 - GDrive.renameAndMoveFile
+  ```yaml
   params: {
     fileId: string;
     newName: string;
@@ -274,7 +303,9 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
     teamDriveId: string;
     driveId: string;
   }
+  ```
 - GDrive.makeACopy
+  ```yaml
   params: {
     fileId: string;
   }
@@ -286,12 +317,16 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
     teamDriveId: string;
     driveId: string;
   }
+  ```
 - GSheet.getProtectedRangeIds
+  ```yaml
   params: {
     fileId: string;
   }
   response: number[]
+  ```
 - GSheet.addPermissionsToProtectedCells
+  ```yaml
   params: {
     fileId: string;
     emails: string[]
@@ -300,7 +335,9 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
     spreadsheetId: string;
     replies: Array<{}>
   }
+  ```
 - GSheet.replaceCells
+  ```yaml
   params: {
     fileId: string;
     country: {
@@ -317,7 +354,9 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
       updatedCells: number;
     };
   }
+  ```
 - GSheet.addSheetToList
+  ```yaml
   params: {
     fileId: string;
     country: {
@@ -336,11 +375,15 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
       updatedCells: number;
     }
   }
+  ```
 - GSheet.getDevelopers
+  ```yaml
   params: EMPTY
   response: string[]
+  ```
 ##### PermissionGroup
 - create
+  ```yaml
   params: {
     application: {
       callId: string;
@@ -390,14 +433,18 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
     time: string;
     name: string;
   }
+  ```
 - generatePermissionGroupName
+  ```yaml
   params: {
     domainName: string;
     system: string;
   }
   response: string;
+  ```
 ##### Site
 - create
+  ```yaml
   params: {
     siteName: string;
   };
@@ -409,7 +456,9 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
     time: string;
     apiKey: string;
   }
+  ```
 - connectWithParent
+  ```yaml
   response: {
     statusCode: numberl
     errorCode: number;
@@ -417,11 +466,15 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
     callId: string;
     time: string;
   }
+  ```
 - generateName
+  ```yaml
   params: EMPTY
   response: string;
+  ```
 ##### WebSDK
 - get
+  ```yaml
   params: EMPTY
   response: {
     statusCode: number;
@@ -461,7 +514,9 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
       secret: string;
     }
   }
+  ```
 - set
+  ```yaml
   params: {
     masterWebSDK: string;
   }
@@ -472,8 +527,11 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
     callId: string;
     time: string;
   }
+  ```
 - replaceVariablesInWebSDK
+  ```yaml
   params: {
     webSDK: string;
   }
   response: string;
+  ```
