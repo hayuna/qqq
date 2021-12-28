@@ -73,7 +73,7 @@ const GSheet = {
                     [
                         country.fullname,
                         country.ISOCode,
-                        `https://docs.google.com/spreadsheets/d/${fileId}`
+                        `https://docs.google.com/spreadsheets/d/${fileId}/edit#gid=627292782`
                     ]
                 ]
             },
