@@ -14,7 +14,7 @@ const WebSDK = {
         return masterConfig
     },
 
-    async set(masterWebSDK, apiKey) {
+    async set(masterWebSDK) {
         console.log('9/18 Setting WebSDK')
         const data = new FormData();
         data.append("apiKey", apiKey);

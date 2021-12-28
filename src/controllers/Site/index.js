@@ -16,7 +16,7 @@ const Site = {
         return response
     },
 
-    async connectWithParent(apiKey) {
+    async connectWithParent() {
         console.log('5/18 Create connection with parent apikey')
         const data = new FormData();
         data.append("apiKey", apiKey);

@@ -27,14 +27,15 @@ const create = async (environment) => {
 
   const site = await Site.create(domainName)
   errorHandler(site)
+  global.apiKey = site.apiKey
 
-  const connection = await Site.connectWithParent(site.apiKey)
+  const connection = await Site.connectWithParent()
   errorHandler(connection)
 
   const masterWebSDK = await WebSDK.get()
   errorHandler(masterWebSDK)
 
-  const newWebSDK = await WebSDK.set(masterWebSDK.globalConf, site.apiKey)
+  const newWebSDK = await WebSDK.set(masterWebSDK.globalConf)
   errorHandler(newWebSDK)
 
   const ACLs = await ACL.getAll();
@@ -49,7 +50,7 @@ const create = async (environment) => {
   const applicationInConsole = await Application.assignToGroup(application.user)
   errorHandler(applicationInConsole)
 
-  const response = await PermissionGroup.create(application, domainName, site, ACLs)
+  const response = await PermissionGroup.create(application, domainName, ACLs)
   errorHandler(response.permissionGroup)
   console.log(response)
 
@@ -58,15 +59,15 @@ const create = async (environment) => {
   errorHandler(dataflows)
   console.log(dataflows)
 
-  const importDataflow = await Dataflow.create(dataflows[0], site.apiKey)
+  const importDataflow = await Dataflow.create(dataflows[0])
   errorHandler(importDataflow)
-  await Dataflow.setScheduleInit(importDataflow.id, site.apiKey)
-  await Dataflow.setSchedule(importDataflow.id, site.apiKey)
+  await Dataflow.setScheduleInit(importDataflow.id)
+  await Dataflow.setSchedule(importDataflow.id)
 
-  const exportDataflow = await Dataflow.create(dataflows[1], site.apiKey)
+  const exportDataflow = await Dataflow.create(dataflows[1])
   errorHandler(exportDataflow)
-  await Dataflow.setScheduleInit(exportDataflow.id, site.apiKey)
-  await Dataflow.setSchedule(exportDataflow.id, site.apiKey)
+  await Dataflow.setScheduleInit(exportDataflow.id)
+  await Dataflow.setSchedule(exportDataflow.id)
   console.log({ importDataflow, exportDataflow })
 
   /* SKIP GOOGLE PART WHEN ENV = SANDBOX */

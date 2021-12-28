@@ -7,7 +7,7 @@ const delay = ms => {
 };
 
 const PermissionGroup = {
-    async recreate(application, domainName, apiKey, acl) {
+    async recreate(application, domainName, acl) {
         const data = new FormData();
         data.append("partnerID", CONFIG[environment].partnerId)
         data.append("groupID", this.generatePermissionGroupName(domainName, body.system))
@@ -23,7 +23,7 @@ const PermissionGroup = {
         return permissionGroup
     },
 
-    async create(application, domainName, site, ACLs) {
+    async create(application, domainName, ACLs) {
         console.log(`17/18 Creating permission group in ${environment}`)
 
         let success = false
@@ -32,7 +32,7 @@ const PermissionGroup = {
         let permissionGroup
         while (!success && counter < 30) {
             await delay(3000)
-            permissionGroup = await this.recreate(application.user, domainName, site.apiKey, ACLs.standard_application.name)
+            permissionGroup = await this.recreate(application.user, domainName, ACLs.standard_application.name)
             console.log(permissionGroup)
             if (!permissionGroup.errorCode) {
                 success = true

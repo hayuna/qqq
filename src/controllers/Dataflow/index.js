@@ -26,7 +26,7 @@ const Dataflow = {
     return template
   },
 
-  async create(template, apiKey) {
+  async create(template) {
     const data = new FormData();
     data.append("apiKey", apiKey)
     const temp = await this.replaceVariables(template)
@@ -35,7 +35,7 @@ const Dataflow = {
     return response
   },
 
-  async setScheduleInit(dataflowId, apiKey) {
+  async setScheduleInit(dataflowId) {
     const data = new FormData();
     data.append("apiKey", apiKey)
     data.append("data", JSON.stringify({
@@ -57,7 +57,7 @@ const Dataflow = {
     await etlAPI(data, '/idx.createScheduling')
   },
 
-  async setSchedule(dataflowId, apiKey) {
+  async setSchedule(dataflowId) {
     const data = new FormData();
     data.append("apiKey", apiKey)
     data.append("data", JSON.stringify({
