@@ -88,6 +88,9 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
 | `404` | `NOT FOUND`|
 | `500` | `INTERNAL SERVER ERROR`|
 
+#### Flow between methods
+<img src="/assets/flow.png" />
+
 #### MODULE DOCTYPES (Typescript in the future can replace it)
 ##### ACL
 - getAll
@@ -535,3 +538,6 @@ The `incorrectParameters` attribute contains list of forbidden parameters.
   }
   response: string;
   ```
+
+
+
