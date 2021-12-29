@@ -23,6 +23,17 @@ Install dependencies
   npm install
 ```
 
+Download credentials to Google Service Account
+
+```bash
+Go to Google Cloud Dashboard https://console.cloud.google.com/iam-admin/serviceaccounts/details/114462709147202613452/keys?project=gigya-epicx-program
+Click ADD KEY
+Choose New Key
+Choose JSON
+Click Create
+Move downloaded file to src/controllers/Google/credentials.json
+```
+
 Start the server
 
 ```bash
