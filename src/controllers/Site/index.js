@@ -5,33 +5,46 @@ import { dataCenterConverter } from '../../utils.js'
 
 const Site = {
     async create(siteName) {
-        console.log('3/18 Create children apikey')
+        console.log('\x1b[36m%s\x1b[0m', '3/18 Create children apikey')
         const data = new FormData();
         data.append("dataCenter", dataCenterConverter(body.dataCenter));
         data.append("partnerID", CONFIG[environment].partnerId);
         data.append("baseDomain", siteName);
 
+        if(!(await this.isNameAvailable(siteName))) {
+            throw new Error('This name for apiKey exists')
+        }
+
         const response = await api(data, '/admin.createSite')
-        console.log('4/18 Children apikey has been created')
+        console.log('\x1b[36m%s\x1b[0m', '4/18 Children apikey has been created')
         return response
     },
 
     async connectWithParent() {
-        console.log('5/18 Create connection with parent apikey')
+        console.log('\x1b[36m%s\x1b[0m', '5/18 Create connection with parent apikey')
         const data = new FormData();
         data.append("apiKey", apiKey);
         data.append("siteGroupOwner", CONFIG[environment].parentApiKey[body.dataCenter]);
 
         const response = await api(data, '/admin.setSiteConfig')
-        console.log('6/18 Connection with parent apikey has been created')
+        console.log('\x1b[36m%s\x1b[0m', '6/18 Connection with parent apikey has been created')
         return response
     },
 
     generateName() {
-        console.log('1/18 Generating domain name')
+        console.log('\x1b[36m%s\x1b[0m', '1/18 Generating domain name')
         const purpose = body.purpose
-        console.log('2/18 Domain name was generated')
+        console.log('\x1b[36m%s\x1b[0m', '2/18 Domain name was generated')
         return `${environment}_${body.dataCenter}_${body.countryCode}${purpose ? '_' + purpose : ''}`.toLowerCase();
+    },
+
+    async isNameAvailable(name){
+        const data = new FormData();
+        const siteNames = await api(data, '/admin.getUserSites')
+        const found = siteNames
+            .sites.find((partner) => partner.partnerID === parseInt(CONFIG[environment].partnerId))
+            .sites.find(site => site.baseDomain === name)
+        return !found
     }
 }
 

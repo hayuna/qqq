@@ -5,7 +5,7 @@ import CONFIG from '../../config.js'
 
 const ACL = {
     async getAll() {
-        console.log('11/18 Retrieve ACLs from Master Template')
+        console.log('\x1b[36m%s\x1b[0m', '11/18 Retrieve ACLs from Master Template')
         const listOfACL = []
       
         const calls = []
@@ -18,13 +18,13 @@ const ACL = {
         response.forEach(ACL => {
           listOfACL[ACL.name] = ACL
         })
-        console.log('12/18 ACLs have been retrieved from Master Template')
+        console.log('\x1b[36m%s\x1b[0m', '12/18 ACLs have been retrieved from Master Template')
       
         return listOfACL;
       },
       
       async get(aclId, fromMaster) {
-        console.log(`___ Retrieving ${aclId} ACL`)
+        console.log('\x1b[36m%s\x1b[0m', `___ Retrieving ${aclId} ACL`)
         const data = new FormData();
         data.append("aclID", aclId);
       
@@ -36,24 +36,24 @@ const ACL = {
       
         const ACL = await api(data, "/admin.getACL");
         ACL.name = aclId
-        console.log(`___ ${aclId} ACL has been retrieved`)
+        console.log('\x1b[36m%s\x1b[0m', `___ ${aclId} ACL has been retrieved`)
         return ACL;
       },
       
       async setAll() {
-        console.log(`13/18 Saving ACLs into ${environment}`)
+        console.log('\x1b[36m%s\x1b[0m', `13/18 Saving ACLs into ${environment}`)
         const calls = []
         CONFIG[environment].ACLs.forEach((aclId) => {
           calls.push(this.set(aclId))
         })
       
         const response = await Promise.all(calls)
-        console.log(`14/18 ACLs have been saved into ${environment}`)
+        console.log('\x1b[36m%s\x1b[0m', `14/18 ACLs have been saved into ${environment}`)
         return response;
       },
       
       async set(aclId) {
-        console.log(`___ Setting ${aclId} ACL into ${environment}`)
+        console.log('\x1b[36m%s\x1b[0m', `___ Setting ${aclId} ACL into ${environment}`)
         const masterACL = await this.get(aclId, true);
         const siteACL = await this.get(aclId);
       
@@ -64,7 +64,7 @@ const ACL = {
         data.append("acl", JSON.stringify(masterACL.acl));
         
         const newACL = await api(data, "/admin.setACL");
-        console.log(`___ ${aclId} ACL has been saved to ${environment}`)
+        console.log('\x1b[36m%s\x1b[0m', `___ ${aclId} ACL has been saved to ${environment}`)
         return newACL
       },
 

@@ -14,9 +14,9 @@ export const createSite = async (req, res) => {
     // await create('DEV')
     // await create('TEST')
     // await create('PROD')
-    res.json({ message: 'OK' });
+    res.status(200).json({ message: 'OK' });
   } catch (error) {
-    console.log(error)
+    console.log('\x1b[41m%s\x1b[0m', error.message);
     res.status(500).json({ message: error.message });
   }
 };
@@ -72,18 +72,18 @@ const create = async (environment) => {
 
   /* SKIP GOOGLE PART WHEN ENV = SANDBOX */
   if (environment !== 'SANDBOX') {
-    console.log('Make a copy of blueprint GSheet')
+    console.log('\x1b[36m%s\x1b[0m', 'Make a copy of blueprint GSheet');
     const copiedBlueprint = await Google.GDrive.makeACopy({ fileId: Google.config.BP })
     errorHandler(copiedBlueprint)
 
-    console.log('Create [[COUNTRY]] in [[ENV]] folder')
+    console.log('\x1b[36m%s\x1b[0m', 'Create [[COUNTRY]] in [[ENV]] folder')
     const newFolder = await Google.GDrive.createFolder({
       name: body.countryCode,
       parent: Google.config[environment]
     })
     errorHandler(newFolder)
 
-    console.log(['Paste copied file to [[ENV]]/[[COUNTRY]] and rename file to [[COUNTRY]] - Gigya group management'])
+    console.log('\x1b[36m%s\x1b[0m', 'Paste copied file to [[ENV]]/[[COUNTRY]] and rename file to [[COUNTRY]] - Gigya group management')
     const GSheetfile = await Google.GDrive.renameAndMoveFile({
       fileId: copiedBlueprint.data.id,
       newName: `${body.countryCode} - Gigya group management`,
@@ -91,8 +91,8 @@ const create = async (environment) => {
     })
     errorHandler(GSheetfile)
 
-    console.log('Change cell: country full name');
-    console.log('Change cell: country ISO Code');
+    console.log('\x1b[36m%s\x1b[0m', 'Change cell: country full name');
+    console.log('\x1b[36m%s\x1b[0m', 'Change cell: country ISO Code');
     await Google.GSheet.replaceCells({
       fileId: GSheetfile.data.id,
       country: {
@@ -101,17 +101,16 @@ const create = async (environment) => {
       }
     })
 
-    console.log('Add permissions to protected cells');
+    console.log('\x1b[36m%s\x1b[0m', 'Add permissions to protected cells');
     const developers = await Google.GSheet.getDevelopers()
     errorHandler(developers)
-    console.log(developers)
 
     await Google.GSheet.addPermissionsToProtectedCells({
       fileId: GSheetfile.data.id,
       emails: developers
     })
 
-    console.log('Add GSheet to the list of CUG Gsheet')
+    console.log('\x1b[36m%s\x1b[0m', 'Add GSheet to the list of CUG Gsheet')
     await Google.GSheet.addSheetToList({
       fileId: GSheetfile.data.id,
       country: {

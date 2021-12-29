@@ -24,7 +24,7 @@ const PermissionGroup = {
     },
 
     async create(application, domainName, ACLs) {
-        console.log(`17/18 Creating permission group in ${environment}`)
+        console.log('\x1b[36m%s\x1b[0m', `17/18 Creating permission group in ${environment}`)
 
         let success = false
         let counter = 0
@@ -43,8 +43,8 @@ const PermissionGroup = {
             }
         }
         success
-            ? console.log(`18/18 Permission group has been created in ${environment}`)
-            : console.log(`Error during creating Permission group in ${environment}`)
+            ? console.log('\x1b[36m%s\x1b[0m', `18/18 Permission group has been created in ${environment}`)
+            : console.log('\x1b[41m%s\x1b[0m', `Error during creating Permission group in ${environment}`)
         return { success, counter, message, permissionGroup }
     },
 

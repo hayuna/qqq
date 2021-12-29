@@ -4,20 +4,20 @@ import CONFIG from '../../config.js'
 
 const Application = {
     async create(siteName) {
-        console.log(`15/18 Creating application into ${environment}`)
+        console.log('\x1b[36m%s\x1b[0m', `15/18 Creating application into ${environment}`)
         const data = new FormData();
         data.append("name", `${siteName}_${body.system}_created${this.generateCreationDate()}`.toLowerCase())
         data.append("keyType", "highRate")
         data.append("ownerPartnerId", CONFIG[environment].partnerId)
 
         const newApplication = await api(data, "/admin.createUserKey");
-        console.log(`16/18 Application has been created in ${environment}`)
+        console.log('\x1b[36m%s\x1b[0m', `16/18 Application has been created in ${environment}`)
 
         return newApplication
     },
 
     async assignToGroup(application) {
-        console.log(`___ Adding application to group into ${environment}`)
+        console.log('\x1b[36m%s\x1b[0m', `___ Adding application to group into ${environment}`)
         const data = new FormData();
         data.append("partnerID", CONFIG[environment].partnerId)
         data.append("groupID", '_no_permissions')
@@ -25,7 +25,7 @@ const Application = {
 
         const permissionGroup = await api(data, "/admin.updateGroup");
         permissionGroup.name = '_no_permissions'
-        console.log(`___ Application has been added to group into ${environment}`)
+        console.log('\x1b[36m%s\x1b[0m', `___ Application has been added to group into ${environment}`)
         return permissionGroup
     },
 
