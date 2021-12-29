@@ -29,7 +29,7 @@ const WebSDK = {
 
     replaceVariablesInWebSDK(webSDK) {
         webSDK = webSDK.replace(`[[ENV]]`, environment.toLowerCase())
-        if (body.multicountry) {
+        if (Boolean(body.multicountry)) {
             webSDK = webSDK.replace(`[[MULTI_COUNTRY]]`, body.countryCode.toUpperCase())
             webSDK = webSDK.replace(`countryCode: '[[COUNTRY_CODE]]',`, '')
         } else {
