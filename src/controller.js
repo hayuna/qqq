@@ -1,4 +1,3 @@
-import { errorHandler } from "./utils.js";
 import Dataflow from './controllers/Dataflow/index.js'
 import Application from './controllers/Application/index.js'
 import ACL from './controllers/ACL/index.js'
@@ -25,47 +24,36 @@ const create = async (environment) => {
   global.environment = environment
   const domainName = Site.generateName();
 
-  const site = await Site.create(domainName)
-  errorHandler(site)
-  global.apiKey = site.apiKey
+  // validation for duplicated names
+  await Site.isNameAvailable(domainName)
+  await Application.isNameAvailable(domainName)
+  await PermissionGroup.isNameAvailable(domainName)
 
-  const connection = await Site.connectWithParent()
-  errorHandler(connection)
+  const site = await Site.create(domainName)
+  global.apiKey = site.apiKey
+  await Site.connectWithParent()
 
   const masterWebSDK = await WebSDK.get()
-  errorHandler(masterWebSDK)
-
-  const newWebSDK = await WebSDK.set(masterWebSDK.globalConf)
-  errorHandler(newWebSDK)
+  await WebSDK.set(masterWebSDK.globalConf)
 
   const ACLs = await ACL.getAll();
-  errorHandler(ACLs)
-
-  const newACLs = await ACL.setAll()
-  errorHandler(newACLs)
+  await ACL.setAll()
 
   const application = await Application.create(domainName)
-  errorHandler(application)
-
-  const applicationInConsole = await Application.assignToGroup(application.user)
-  errorHandler(applicationInConsole)
+  await Application.assignToGroup(application.user)
 
   const response = await PermissionGroup.create(application, domainName, ACLs)
-  errorHandler(response.permissionGroup)
   console.log(response)
 
   body.countryCode = body.countryCode.toUpperCase()
   const dataflows = await Dataflow.getAll()
-  errorHandler(dataflows)
   console.log(dataflows)
 
   const importDataflow = await Dataflow.create(dataflows[0])
-  errorHandler(importDataflow)
   await Dataflow.setScheduleInit(importDataflow.id)
   await Dataflow.setSchedule(importDataflow.id)
 
   const exportDataflow = await Dataflow.create(dataflows[1])
-  errorHandler(exportDataflow)
   await Dataflow.setScheduleInit(exportDataflow.id)
   await Dataflow.setSchedule(exportDataflow.id)
   console.log({ importDataflow, exportDataflow })
@@ -74,14 +62,12 @@ const create = async (environment) => {
   if (environment !== 'SANDBOX') {
     console.log('\x1b[36m%s\x1b[0m', 'Make a copy of blueprint GSheet');
     const copiedBlueprint = await Google.GDrive.makeACopy({ fileId: Google.config.BP })
-    errorHandler(copiedBlueprint)
 
     console.log('\x1b[36m%s\x1b[0m', 'Create [[COUNTRY]] in [[ENV]] folder')
     const newFolder = await Google.GDrive.createFolder({
       name: body.countryCode,
       parent: Google.config[environment]
     })
-    errorHandler(newFolder)
 
     console.log('\x1b[36m%s\x1b[0m', 'Paste copied file to [[ENV]]/[[COUNTRY]] and rename file to [[COUNTRY]] - Gigya group management')
     const GSheetfile = await Google.GDrive.renameAndMoveFile({
@@ -89,7 +75,6 @@ const create = async (environment) => {
       newName: `${body.countryCode} - Gigya group management`,
       parent: newFolder.data.id
     })
-    errorHandler(GSheetfile)
 
     console.log('\x1b[36m%s\x1b[0m', 'Change cell: country full name');
     console.log('\x1b[36m%s\x1b[0m', 'Change cell: country ISO Code');
@@ -103,7 +88,6 @@ const create = async (environment) => {
 
     console.log('\x1b[36m%s\x1b[0m', 'Add permissions to protected cells');
     const developers = await Google.GSheet.getDevelopers()
-    errorHandler(developers)
 
     await Google.GSheet.addPermissionsToProtectedCells({
       fileId: GSheetfile.data.id,

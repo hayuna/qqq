@@ -10,7 +10,7 @@ const PermissionGroup = {
     async recreate(application, domainName, acl) {
         const data = new FormData();
         data.append("partnerID", CONFIG[environment].partnerId)
-        data.append("groupID", this.generatePermissionGroupName(domainName, body.system))
+        data.append("groupID", this.generatePermissionGroupName(domainName))
         data.append("aclID", acl)
 
         data.append("scope", JSON.stringify({
@@ -19,7 +19,7 @@ const PermissionGroup = {
         data.append("setUsers", JSON.stringify([application.userKey]))
 
         const permissionGroup = await api(data, "/admin.createGroup");
-        permissionGroup.name = this.generatePermissionGroupName(domainName, body.system)
+        permissionGroup.name = this.generatePermissionGroupName(domainName)
         return permissionGroup
     },
 
@@ -48,8 +48,18 @@ const PermissionGroup = {
         return { success, counter, message, permissionGroup }
     },
 
-    generatePermissionGroupName(domainName, system) {
-        return `api_${domainName}_${system}`.toLowerCase();
+    generatePermissionGroupName(domainName) {
+        return `api_${domainName}_${body.system}`.toLowerCase();
+    },
+
+    async isNameAvailable(name){
+        const groupName = this.generatePermissionGroupName(name)
+        const data = new FormData();
+        data.append("partnerID", CONFIG[environment].partnerId)
+        
+        const groupNames = await api(data, '/admin.getGroups')
+        const found = Object.keys(groupNames.groups).find((group) => group === groupName)
+        return !found
     }
 }
 

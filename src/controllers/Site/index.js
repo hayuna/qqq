@@ -11,10 +11,6 @@ const Site = {
         data.append("partnerID", CONFIG[environment].partnerId);
         data.append("baseDomain", siteName);
 
-        if(!(await this.isNameAvailable(siteName))) {
-            throw new Error('This name for apiKey exists')
-        }
-
         const response = await api(data, '/admin.createSite')
         console.log('\x1b[36m%s\x1b[0m', '4/18 Children apikey has been created')
         return response
