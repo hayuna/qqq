@@ -2,6 +2,7 @@ import { google } from 'googleapis'
 const sheets = google.sheets("v4")
 import config from './config.js'
 import auth from './auth.js'
+import { Console } from '../../utils.js'
 
 const GSheet = {
     async getProtectedRangeIds({ fileId }) {
@@ -19,7 +20,7 @@ const GSheet = {
 
     async addPermissionsToProtectedCells({ fileId, emails }) {
         const protectedRangeIds = await this.getProtectedRangeIds({ fileId })
-        console.log({protectedRangeIds, emails})
+        Console.log({protectedRangeIds, emails})
         const requests = protectedRangeIds.map((protectedRangeId) => {
             return {
                 updateProtectedRange: {

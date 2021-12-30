@@ -5,6 +5,7 @@ import WebSDK from './controllers/WebSDK/index.js'
 import PermissionGroup from './controllers/PermissionGroup/index.js'
 import Site from './controllers/Site/index.js'
 import Google from './controllers/Google/index.js'
+import {Console} from './utils.js' 
 
 export const createSite = async (req, res) => {
   try {
@@ -15,7 +16,7 @@ export const createSite = async (req, res) => {
     // await create('PROD')
     res.status(200).json({ message: 'OK' });
   } catch (error) {
-    console.log('\x1b[41m%s\x1b[0m', error.message);
+    Console.error(error.message);
     res.status(500).json({ message: error.message });
   }
 };
@@ -43,11 +44,11 @@ const create = async (environment) => {
   await Application.assignToGroup(application.user)
 
   const response = await PermissionGroup.create(application, domainName, ACLs)
-  console.log(response)
+  Console.log(response)
 
   body.countryCode = body.countryCode.toUpperCase()
   const dataflows = await Dataflow.getAll()
-  console.log(dataflows)
+  Console.log(dataflows)
 
   const importDataflow = await Dataflow.create(dataflows[0])
   await Dataflow.setScheduleInit(importDataflow.id)
@@ -56,28 +57,28 @@ const create = async (environment) => {
   const exportDataflow = await Dataflow.create(dataflows[1])
   await Dataflow.setScheduleInit(exportDataflow.id)
   await Dataflow.setSchedule(exportDataflow.id)
-  console.log({ importDataflow, exportDataflow })
+  Console.log({ importDataflow, exportDataflow })
 
   /* SKIP GOOGLE PART WHEN ENV = SANDBOX */
   if (environment !== 'SANDBOX') {
-    console.log('\x1b[36m%s\x1b[0m', 'Make a copy of blueprint GSheet');
+    Console.log('Make a copy of blueprint GSheet');
     const copiedBlueprint = await Google.GDrive.makeACopy({ fileId: Google.config.BP })
 
-    console.log('\x1b[36m%s\x1b[0m', 'Create [[COUNTRY]] in [[ENV]] folder')
+    Console.log('Create [[COUNTRY]] in [[ENV]] folder')
     const newFolder = await Google.GDrive.createFolder({
       name: body.countryCode,
       parent: Google.config[environment]
     })
 
-    console.log('\x1b[36m%s\x1b[0m', 'Paste copied file to [[ENV]]/[[COUNTRY]] and rename file to [[COUNTRY]] - Gigya group management')
+    Console.log('Paste copied file to [[ENV]]/[[COUNTRY]] and rename file to [[COUNTRY]] - Gigya group management')
     const GSheetfile = await Google.GDrive.renameAndMoveFile({
       fileId: copiedBlueprint.data.id,
       newName: `${body.countryCode} - Gigya group management`,
       parent: newFolder.data.id
     })
 
-    console.log('\x1b[36m%s\x1b[0m', 'Change cell: country full name');
-    console.log('\x1b[36m%s\x1b[0m', 'Change cell: country ISO Code');
+    Console.log('Change cell: country full name');
+    Console.log('Change cell: country ISO Code');
     await Google.GSheet.replaceCells({
       fileId: GSheetfile.data.id,
       country: {
@@ -86,7 +87,7 @@ const create = async (environment) => {
       }
     })
 
-    console.log('\x1b[36m%s\x1b[0m', 'Add permissions to protected cells');
+    Console.log('Add permissions to protected cells');
     const developers = await Google.GSheet.getDevelopers()
 
     await Google.GSheet.addPermissionsToProtectedCells({
@@ -94,7 +95,7 @@ const create = async (environment) => {
       emails: developers
     })
 
-    console.log('\x1b[36m%s\x1b[0m', 'Add GSheet to the list of CUG Gsheet')
+    Console.log('Add GSheet to the list of CUG Gsheet')
     await Google.GSheet.addSheetToList({
       fileId: GSheetfile.data.id,
       country: {

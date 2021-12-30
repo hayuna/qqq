@@ -1,10 +1,11 @@
 import FormData from "form-data";
 import { api } from "../../api.js";
 import CONFIG from '../../config.js'
+import { Console } from "../../utils.js";
 
 const Application = {
     async create(siteName) {
-        console.log('\x1b[36m%s\x1b[0m', `15/18 Creating application into ${environment}`)
+        Console.log(`15/18 Creating application into ${environment}`)
         const data = new FormData();
         const applicationName = `${siteName}_${body.system}_created${this.generateCreationDate()}`.toLowerCase()
         data.append("name", applicationName)
@@ -12,13 +13,13 @@ const Application = {
         data.append("ownerPartnerId", CONFIG[environment].partnerId)
 
         const newApplication = await api(data, "/admin.createUserKey");
-        console.log('\x1b[36m%s\x1b[0m', `16/18 Application has been created in ${environment}`)
+        Console.log(`16/18 Application has been created in ${environment}`)
 
         return newApplication
     },
 
     async assignToGroup(application) {
-        console.log('\x1b[36m%s\x1b[0m', `___ Adding application to group into ${environment}`)
+        Console.log(`___ Adding application to group into ${environment}`)
         const data = new FormData();
         data.append("partnerID", CONFIG[environment].partnerId)
         data.append("groupID", '_no_permissions')
@@ -26,7 +27,7 @@ const Application = {
 
         const permissionGroup = await api(data, "/admin.updateGroup");
         permissionGroup.name = '_no_permissions'
-        console.log('\x1b[36m%s\x1b[0m', `___ Application has been added to group into ${environment}`)
+        Console.log(`___ Application has been added to group into ${environment}`)
         return permissionGroup
     },
 
@@ -46,7 +47,10 @@ const Application = {
         
         const applicationNames = await api(data, '/admin.getGroupUsers')
         const found = applicationNames.users.find(application => application.name === applicationName)
-        return !found
+        
+        if(found) {
+            throw new Error('❌ This name for application exists')
+        }
     }
     
 }

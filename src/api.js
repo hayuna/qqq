@@ -1,6 +1,6 @@
 import axios from "axios";
 import https from "https";
-import { dataCenterInURL, dataCenterConverter } from "./utils.js";
+import { dataCenterInURL, dataCenterConverter, Console } from "./utils.js";
 
 export const api = async (data, url) => {
   data.append("secret", body.secret);
@@ -23,7 +23,7 @@ export const api = async (data, url) => {
     const response = await axios(config);
     return response.data;
   } catch (e) {
-    console.log(e);
+    Console.error(e);
   }
 };
 
@@ -48,7 +48,7 @@ export const etlAPI = async (data, url) => {
     const response = await axios(config);
     return response.data;
   } catch (e) {
-    console.log(e);
+    Console.error(e);
   }
 };
 
@@ -73,6 +73,6 @@ export const etlMasterAPI = async (data, url) => {
     const response = await axios(config);
     return response.data;
   } catch (e) {
-    console.log(e);
+    Console.error(e);
   }
 };

@@ -85,7 +85,7 @@ const Dataflow = {
     data.append("apiKey", CONFIG.MASTER_TEMPLATE.apiKey)
     data.append("query", `SELECT * FROM dataflow`)
     const response = await etlMasterAPI(data, '/idx.search')
-    console.log(response)
+    Console.log(response)
     const ETLs = response.result
       .filter(dataflow => dataflow.name.includes('CUG'))
       .map(({ name, steps, description }) => ({

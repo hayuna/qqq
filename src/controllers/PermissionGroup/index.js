@@ -1,6 +1,7 @@
 import FormData from "form-data";
 import { api } from "../../api.js";
 import CONFIG from '../../config.js'
+import { Console } from "../../utils.js";
 
 const delay = ms => {
     return new Promise(res => setTimeout(res, ms))
@@ -24,7 +25,7 @@ const PermissionGroup = {
     },
 
     async create(application, domainName, ACLs) {
-        console.log('\x1b[36m%s\x1b[0m', `17/18 Creating permission group in ${environment}`)
+        Console.log(`17/18 Creating permission group in ${environment}`)
 
         let success = false
         let counter = 0
@@ -33,7 +34,7 @@ const PermissionGroup = {
         while (!success && counter < 30) {
             await delay(3000)
             permissionGroup = await this.recreate(application.user, domainName, ACLs.standard_application.name)
-            console.log(permissionGroup)
+            Console.log(permissionGroup)
             if (!permissionGroup.errorCode) {
                 success = true
                 message = null
@@ -43,8 +44,8 @@ const PermissionGroup = {
             }
         }
         success
-            ? console.log('\x1b[36m%s\x1b[0m', `18/18 Permission group has been created in ${environment}`)
-            : console.log('\x1b[41m%s\x1b[0m', `Error during creating Permission group in ${environment}`)
+            ? Console.log(`18/18 Permission group has been created in ${environment}`)
+            : Console.error(`Error during creating Permission group in ${environment}`)
         return { success, counter, message, permissionGroup }
     },
 
@@ -59,7 +60,10 @@ const PermissionGroup = {
         
         const groupNames = await api(data, '/admin.getGroups')
         const found = Object.keys(groupNames.groups).find((group) => group === groupName)
-        return !found
+
+        if(found) {
+            throw new Error('❌ This name for permission group exists')
+        }
     }
 }
 

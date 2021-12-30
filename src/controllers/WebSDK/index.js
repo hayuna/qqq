@@ -1,21 +1,22 @@
 import FormData from "form-data";
 import { api } from "../../api.js";
 import CONFIG from '../../config.js'
+import { Console } from "../../utils.js";
 
 const WebSDK = {
     async get() {
-        console.log('\x1b[36m%s\x1b[0m', '7/18 Retrieve WebSDK from Master Template')
+        Console.log('7/18 Retrieve WebSDK from Master Template')
         const data = new FormData();
         data.append("apiKey", CONFIG.MASTER_TEMPLATE.apiKey);
         data.append('includeGlobalConf', 'true');
 
         const masterConfig = await api(data, '/admin.getSiteConfig')
-        console.log('\x1b[36m%s\x1b[0m', '8/18 WebSDK from Master Template was retrieved')
+        Console.log('8/18 WebSDK from Master Template was retrieved')
         return masterConfig
     },
 
     async set(masterWebSDK) {
-        console.log('\x1b[36m%s\x1b[0m', '9/18 Setting WebSDK')
+        Console.log('9/18 Setting WebSDK')
         const data = new FormData();
         data.append("apiKey", apiKey);
 
@@ -23,7 +24,7 @@ const WebSDK = {
         data.append('globalConf', masterWebSDK)
 
         const response = await api(data, '/admin.setSiteConfig')
-        console.log('\x1b[36m%s\x1b[0m', '10/18 WebSDK was set')
+        Console.log('10/18 WebSDK was set')
         return response
     },
 
