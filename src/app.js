@@ -3,6 +3,7 @@ import cors from 'cors';
 import { createSite } from './controller.js';
 import { getPartners } from './partners/index.js'
 import { schema, validateBody } from './validators/index.js';
+import { Console } from './utils.js';
 
 const app = express();
 app.use(express.urlencoded({
@@ -24,12 +25,12 @@ app.use((_req, res, _next) => {
 });
 
 app.use((err, _req, res, _next) => {
-  console.error(err.stack);
+  Console.error(err.stack);
   res.status(500).json({ message: 'Internal server error' });
 });
 
 process.on('unhandledRejection', (reason, promise) => {
-  console.log(reason)
+  Console.error(reason)
 });
 
 export default app;

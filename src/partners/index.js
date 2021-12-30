@@ -1,4 +1,5 @@
 import config from '../config.js'
+import { Console } from '../utils.js';
 
 export const getPartners = async (req, res) => {
     try {
@@ -13,7 +14,7 @@ export const getPartners = async (req, res) => {
       }, [])
       res.json({ data: response });
     } catch (error) {
-      console.log(error)
+      Console.log(error)
       res.status(500).json({ message: error.message });
     }
   };
