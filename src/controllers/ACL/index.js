@@ -11,7 +11,7 @@ const ACL = {
       
         const calls = []
         CONFIG.MASTER_TEMPLATE.ACLs.forEach((aclId) => {
-          calls.push(this.get(aclId))
+          calls.push(this.get(aclId, true))
         })
       
         const response = await Promise.all(calls)
@@ -25,7 +25,6 @@ const ACL = {
       },
       
       async get(aclId, fromMaster) {
-        Console.log(`___ Retrieving ${aclId} ACL`)
         const data = new FormData();
         data.append("aclID", aclId);
       
@@ -37,15 +36,19 @@ const ACL = {
       
         const ACL = await api(data, "/admin.getACL");
         ACL.name = aclId
-        Console.log(`___ ${aclId} ACL has been retrieved`)
+        if(fromMaster){
+          Console.log(`___ ${aclId} ACL has been retrieved from Master Template`)
+        } else {
+          Console.log(`___ ${aclId} ACL has been retrieved from ${environment}`)
+        }
         return ACL;
       },
       
-      async setAll() {
+      async setAll(ACLs) {
         Console.log(`13/18 Saving ACLs into ${environment}`)
         const calls = []
         CONFIG[environment].ACLs.forEach((aclId) => {
-          calls.push(this.set(aclId))
+          calls.push(this.set(aclId, ACLs))
         })
       
         const response = await Promise.all(calls)
@@ -53,12 +56,15 @@ const ACL = {
         return response;
       },
       
-      async set(aclId) {
+      async set(aclId, masterACLs) {
         Console.log(`___ Setting ${aclId} ACL into ${environment}`)
-        const masterACL = await this.get(aclId, true);
+        const masterACL = masterACLs[aclId]
         const siteACL = await this.get(aclId);
       
-        if(this.compareACLs(masterACL.acl, siteACL.acl)) return;
+        if(this.compareACLs(masterACL.acl, siteACL.acl)) {
+          Console.log(`___ ⏭ ${aclId} ACL skipped - it's equal to the one from Master Template `)
+          return;
+        }
         const data = new FormData();
         data.append("partnerID", CONFIG[environment].partnerId);
         data.append("aclID", aclId);

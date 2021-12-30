@@ -1,5 +1,5 @@
 import FormData from "form-data";
-import { etlAPI, etlMasterAPI } from "../../api.js";
+import { etlAPI } from "../../api.js";
 import CONFIG from '../../config.js'
 import { Console } from "../../utils.js";
 
@@ -85,7 +85,7 @@ const Dataflow = {
     const data = new FormData();
     data.append("apiKey", CONFIG.MASTER_TEMPLATE.apiKey)
     data.append("query", `SELECT * FROM dataflow`)
-    const response = await etlMasterAPI(data, '/idx.search')
+    const response = await etlAPI(data, '/idx.search', true)
     Console.log(response)
     const ETLs = response.result
       .filter(dataflow => dataflow.name.includes('CUG'))

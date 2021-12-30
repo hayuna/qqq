@@ -44,7 +44,7 @@ const create = async (environment) => {
   await WebSDK.set(masterWebSDK.globalConf)
 
   const ACLs = await ACL.getAll();
-  await ACL.setAll()
+  await ACL.setAll(ACLs)
   await ACL.create(domainName)
 
   const application = await Application.create(domainName)
