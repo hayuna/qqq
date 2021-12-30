@@ -39,11 +39,12 @@ const create = async (environment) => {
 
   const ACLs = await ACL.getAll();
   await ACL.setAll()
+  await ACL.create(domainName)
 
   const application = await Application.create(domainName)
   await Application.assignToGroup(application.user)
 
-  const response = await PermissionGroup.create(application, domainName, ACLs)
+  const response = await PermissionGroup.create(application, domainName)
   Console.log(response)
 
   body.countryCode = body.countryCode.toUpperCase()

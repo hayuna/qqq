@@ -8,11 +8,11 @@ const delay = ms => {
 };
 
 const PermissionGroup = {
-    async recreate(application, domainName, acl) {
+    async recreate(application, domainName) {
         const data = new FormData();
         data.append("partnerID", CONFIG[environment].partnerId)
         data.append("groupID", this.generatePermissionGroupName(domainName))
-        data.append("aclID", acl)
+        data.append("aclID", this.generatePermissionGroupName(domainName))
 
         data.append("scope", JSON.stringify({
             allowSites: [apiKey]
@@ -24,7 +24,7 @@ const PermissionGroup = {
         return permissionGroup
     },
 
-    async create(application, domainName, ACLs) {
+    async create(application, domainName) {
         Console.log(`17/18 Creating permission group in ${environment}`)
 
         let success = false
@@ -33,7 +33,7 @@ const PermissionGroup = {
         let permissionGroup
         while (!success && counter < 30) {
             await delay(3000)
-            permissionGroup = await this.recreate(application.user, domainName, ACLs.standard_application.name)
+            permissionGroup = await this.recreate(application.user, domainName)
             Console.log(permissionGroup)
             if (!permissionGroup.errorCode) {
                 success = true
@@ -64,7 +64,18 @@ const PermissionGroup = {
         if(found) {
             throw new Error('❌ This name for permission group exists')
         }
-    }
+    },
+
+    async update(name) {
+        const domainName = this.generatePermissionGroupName(name)
+        const data = new FormData();
+        data.append("partnerID", CONFIG[environment].partnerId)
+        data.append("groupID", domainName)
+        data.append("aclID", domainName)
+
+        const permissionGroup = await api(data, "/admin.updateGroup");
+        return permissionGroup
+    },
 }
 
 export default PermissionGroup

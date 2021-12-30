@@ -69,6 +69,20 @@ const ACL = {
         return newACL
       },
 
+      async create(domainName){
+        const name = `api_${domainName}_${body.system}`.toLowerCase();
+        const standardApplicationACL = await this.get('standard_application', true)
+        standardApplicationACL.acl._inherit.push("_accountsFullAccess")
+        
+        const data = new FormData();
+        data.append("partnerID", CONFIG[environment].partnerId);
+        data.append("aclID", name);
+        data.append("acl", JSON.stringify(standardApplicationACL.acl));
+        
+        const newACL = await api(data, "/admin.setACL");
+        console.log({newACL})
+      },
+
       compareACLs(masterACL, environmentACL) {
         return _.isEqual(masterACL, environmentACL)
     }
