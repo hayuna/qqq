@@ -76,7 +76,7 @@ const Dataflow = {
       enabled: true,
       id: "Will be generated upon creation",
       logLevel: "info",
-      failureEmailNotification: "marek.kowalonek@contractors.roche.com"
+      failureEmailNotification: environment !== 'SANDBOX' ? "marek.kowalonek@contractors.roche.com" : "sandbox@notexist.com"
     }))
     await etlAPI(data, '/idx.createScheduling')
   },
