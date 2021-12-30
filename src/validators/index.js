@@ -7,8 +7,8 @@ export const schema = Joi
     language: Joi.alternatives().try(Joi.array().items(Joi.string().max(5)), Joi.string().max(5)).required(),
     system: Joi.string().max(10).required(),
     purpose: Joi.string().max(15),
-    userKey: Joi.string().required(),
-    secret: Joi.string().required(),
+    userKey: Joi.string(),
+    secret: Joi.string(),
     multicountry: Joi.boolean().default(false),
     countryFullname: Joi.string().required()
   })

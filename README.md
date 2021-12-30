@@ -34,6 +34,12 @@ Click Create
 Move downloaded file to src/controllers/Google/credentials.json
 ```
 
+Optional step
+
+```bash
+If you want to avoid adding gigya userKey and secret inside request, you can create .env file in the root of project and provide these credentials in this file. Format of .env is inside .env.example
+```
+
 Start the server
 
 ```bash

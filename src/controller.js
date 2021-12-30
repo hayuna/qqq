@@ -5,11 +5,17 @@ import WebSDK from './controllers/WebSDK/index.js'
 import PermissionGroup from './controllers/PermissionGroup/index.js'
 import Site from './controllers/Site/index.js'
 import Google from './controllers/Google/index.js'
+import Auth from './controllers/Auth/index.js'
 import {Console} from './utils.js' 
+import dotenv from 'dotenv'
+dotenv.config()
 
 export const createSite = async (req, res) => {
   try {
     global.body = req.body
+
+    await Auth.login()
+    
     await create('SANDBOX')
     // await create('DEV')
     // await create('TEST')
