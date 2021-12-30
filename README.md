@@ -66,8 +66,8 @@ Start the server
 | `language` | `string(5) or array of string(5)` | Yes |  |
 | `system` | `string(10)` | Yes |  |
 | `purpose` | `string(15)` | No |  |
-| `userKey` | `string` | Yes |  |
-| `secret` | `string` | Yes |  |
+| `userKey` | `string` | No | Must be specified in request or .env file |
+| `secret` | `string` | No | Must be specified in request or .env file |
 | `multicountry` | `boolean` | No | Default `false`|
 | `countryFullname` | `string` | Yes |  |
 
