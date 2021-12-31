@@ -56,10 +56,10 @@ f) Automatically login users upon email verification
 ## [1.1.0] - 2021-12-14
   
 ### Added
-- Added support for Dataflows
+- 🛠 Added support for Dataflows
 
 ### Changed
-- Added environment and body to global scope
+- ♻️ Added environment and body to global scope
  
 ## [1.0.0] - 2021-06-22
 - 🔖 First version of application released
