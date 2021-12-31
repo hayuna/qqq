@@ -67,7 +67,7 @@ const GSheet = {
     async addSheetToList({fileId, country}){
         await sheets.spreadsheets.values.append({
             spreadsheetId: config.LIST,
-            range: "Dev!A:C",
+            range: `${_.capitalize(environment)}!A:C`,
             valueInputOption: "RAW",
             requestBody: {
                 values: [
