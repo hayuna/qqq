@@ -1,4 +1,3 @@
-
 # Change Log
 All notable changes to this project will be documented in this file.
  
@@ -6,13 +5,7 @@ All notable changes to this project will be documented in this file.
  
 ### Added
 - 🛠 Added support for copying screensets
-- 🛠 Added support for email verification policy
-a) Require email verification
-b) Require email verification after social login
-c) Use code verification
-d) Customize redirection URL
-e) Customize verification link expiration time
-f) Automatically login users upon email verification
+- 🛠 Added support for email verification policy (Require email verification, Require email verification after social login, Use code verification, Customize redirection URL, Customize verification link expiration time, Automatically login users upon email verification)
 - 🛠 Added support for SANDBOX in Google.GDrive and Google.GSheet
  
 ### Fixed
