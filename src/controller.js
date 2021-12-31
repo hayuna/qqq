@@ -8,7 +8,6 @@ import Google from './controllers/Google/index.js'
 import Auth from './controllers/Auth/index.js'
 import { Console } from './utils.js'
 import dotenv from 'dotenv'
-import Socials from './controllers/Socials/index.js'
 import Policy from './controllers/Policy/index.js'
 import Screenset from './controllers/Screenset/index.js'
 

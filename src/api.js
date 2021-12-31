@@ -88,30 +88,3 @@ export const etlAPI = async (data, url, fromMaster) => {
     Console.error(e);
   }
 };
-
-export const socializeAPI = async (data, url) => {
-  data.append("secret", body.secret);
-  data.append("userKey", body.userKey);
-  data.append('format', 'json')
-
-  const agent = new https.Agent({  
-    rejectUnauthorized: false
-  });
-
-  const config = {
-    method: "post",
-    url: `https://socialize.us1.gigya.com${url}`,
-    headers: {
-      ...data.getHeaders(),
-    },
-    data: data,
-    httpsAgent: agent,
-  };
-
-  try {
-    const response = await axios(config);
-    return response.data;
-  } catch (e) {
-    Console.error(e);
-  }
-};
