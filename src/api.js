@@ -51,7 +51,7 @@ export const api = async (data, url, fromMaster)  => {
     data: data,
     httpsAgent: agent,
   };
-  console.log(config.url)
+  
   try {
     const response = await axios(config);
     return response.data;
