@@ -3,6 +3,7 @@ const sheets = google.sheets("v4")
 import config from './config.js'
 import auth from './auth.js'
 import { Console } from '../../utils.js'
+import _ from 'lodash'
 
 const GSheet = {
     async getProtectedRangeIds({ fileId }) {

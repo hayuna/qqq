@@ -6,8 +6,12 @@ import PermissionGroup from './controllers/PermissionGroup/index.js'
 import Site from './controllers/Site/index.js'
 import Google from './controllers/Google/index.js'
 import Auth from './controllers/Auth/index.js'
-import {Console} from './utils.js' 
+import { Console } from './utils.js'
 import dotenv from 'dotenv'
+import Socials from './controllers/Socials/index.js'
+import Policy from './controllers/Policy/index.js'
+import Screenset from './controllers/Screenset/index.js'
+
 dotenv.config()
 
 export const createSite = async (req, res) => {
@@ -15,7 +19,7 @@ export const createSite = async (req, res) => {
     global.body = req.body
 
     await Auth.login()
-    
+
     await create('SANDBOX')
     // await create('DEV')
     // await create('TEST')
@@ -39,6 +43,11 @@ const create = async (environment) => {
   const site = await Site.create(domainName)
   global.apiKey = site.apiKey
   await Site.connectWithParent()
+
+  const screensets = await Screenset.getAll()
+  await Screenset.set(screensets)
+
+  await Policy.setEmailVerification()
 
   const masterWebSDK = await WebSDK.get()
   await WebSDK.set(masterWebSDK.globalConf)
@@ -66,49 +75,47 @@ const create = async (environment) => {
   await Dataflow.setSchedule(exportDataflow.id)
   Console.log({ importDataflow, exportDataflow })
 
-  /* SKIP GOOGLE PART WHEN ENV = SANDBOX */
-  if (environment !== 'SANDBOX') {
-    Console.log('Make a copy of blueprint GSheet');
-    const copiedBlueprint = await Google.GDrive.makeACopy({ fileId: Google.config.BP })
+  Console.log('Make a copy of blueprint GSheet');
+  const copiedBlueprint = await Google.GDrive.makeACopy({ fileId: Google.config.BP })
 
-    Console.log('Create [[COUNTRY]] in [[ENV]] folder')
-    const newFolder = await Google.GDrive.createFolder({
-      name: body.countryCode,
-      parent: Google.config[environment]
-    })
+  Console.log('Create [[COUNTRY]] in [[ENV]] folder')
+  const newFolder = await Google.GDrive.createFolder({
+    name: body.countryCode,
+    parent: Google.config[environment]
+  })
 
-    Console.log('Paste copied file to [[ENV]]/[[COUNTRY]] and rename file to [[COUNTRY]] - Gigya group management')
-    const GSheetfile = await Google.GDrive.renameAndMoveFile({
-      fileId: copiedBlueprint.data.id,
-      newName: `${body.countryCode} - Gigya group management`,
-      parent: newFolder.data.id
-    })
+  Console.log('Paste copied file to [[ENV]]/[[COUNTRY]] and rename file to [[COUNTRY]] - Gigya group management')
+  const GSheetfile = await Google.GDrive.renameAndMoveFile({
+    fileId: copiedBlueprint.data.id,
+    newName: `${body.countryCode} - Gigya group management`,
+    parent: newFolder.data.id
+  })
 
-    Console.log('Change cell: country full name');
-    Console.log('Change cell: country ISO Code');
-    await Google.GSheet.replaceCells({
-      fileId: GSheetfile.data.id,
-      country: {
-        fullname: body.countryFullname,
-        ISOCode: body.countryCode,
-      }
-    })
+  Console.log('Change cell: country full name');
+  Console.log('Change cell: country ISO Code');
+  await Google.GSheet.replaceCells({
+    fileId: GSheetfile.data.id,
+    country: {
+      fullname: body.countryFullname,
+      ISOCode: body.countryCode,
+    }
+  })
 
-    Console.log('Add permissions to protected cells');
-    const developers = await Google.GSheet.getDevelopers()
+  Console.log('Add permissions to protected cells');
+  const developers = await Google.GSheet.getDevelopers()
 
-    await Google.GSheet.addPermissionsToProtectedCells({
-      fileId: GSheetfile.data.id,
-      emails: developers
-    })
+  await Google.GSheet.addPermissionsToProtectedCells({
+    fileId: GSheetfile.data.id,
+    emails: developers
+  })
 
-    Console.log('Add GSheet to the list of CUG Gsheet')
-    await Google.GSheet.addSheetToList({
-      fileId: GSheetfile.data.id,
-      country: {
-        fullname: body.countryFullname,
-        ISOCode: body.countryCode,
-      }
-    })
-  }
+  Console.log('Add GSheet to the list of CUG Gsheet')
+  await Google.GSheet.addSheetToList({
+    fileId: GSheetfile.data.id,
+    country: {
+      fullname: body.countryFullname,
+      ISOCode: body.countryCode,
+    }
+  })
+
 }

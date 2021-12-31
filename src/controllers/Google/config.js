@@ -4,6 +4,7 @@ export default {
     DEV: '19VbwhIUVqLi5U8MHblv22L4wa2oCvG_S', // SharedDrive
     TEST: '1ytPCJwB65PCM0In9UIZfliO-5zJfLTfE', // SharedDrive
     PROD: '1LnsXBY-ssAKnYlM5HSlldzpYhSSey_-L', // SharedDrive
+    SANDBOX: '1SZA0AubsZtHk8oK8SnN6O7xpqc2YD5nj', // SharedDrive
     BP: '1-bK48LOegjv4-qpWzga2fb4MnpThbWldzmwWjePNk5I', // SharedDrive -> Template
     TEMPLATE_FOLDER: '1UuMmI2SKLT6yFV_9RJy-bXTrX_xu_6ci', // SharedDrive
     GOOGLE_SERVICE_ACCOUNT_EMAIL: 'cug-377@gigya-epicx-program.iam.gserviceaccount.com'
