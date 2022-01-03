@@ -38,6 +38,7 @@ const create = async (environment) => {
   await Site.isNameAvailable(domainName)
   await Application.isNameAvailable(domainName)
   await PermissionGroup.isNameAvailable(domainName)
+  await Google.GDrive.checkCredentials()
 
   const site = await Site.create(domainName)
   global.apiKey = site.apiKey
