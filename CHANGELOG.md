@@ -7,7 +7,11 @@ All notable changes to this project will be documented in this file.
 - 🛠 Added support for copying screensets
 - 🛠 Added support for email verification policy (Require email verification, Require email verification after social login, Use code verification, Customize redirection URL, Customize verification link expiration time, Automatically login users upon email verification)
 - 🛠 Added support for SANDBOX in Google.GDrive and Google.GSheet
+- Added walidation for existing Google credentials file
  
+### Changed
+- 📚 Separated TYPES with README
+
 ### Fixed
 - 🐛 Fixed lodash dependencies in GSheet
  
