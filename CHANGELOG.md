@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
  
-## [1.5.0] - IN-REVIEW
+## [1.5.0] - 2022-01-04
  
 ### Added
 - 🛠 Added support for copying screensets
