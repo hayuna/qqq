@@ -2,8 +2,19 @@ import { google } from 'googleapis';
 import config from './config.js';
 const drive = google.drive('v3')
 import auth from './auth.js'
+import fs from 'fs'
+import {access} from 'fs/promises'
 
 const GDrive = {
+    async checkCredentials(){
+        const file = 'src/controllers/Google/credentials.json'
+        try{
+            await access(file, fs.constants.R_OK)
+        } catch(e) {
+            throw new Error(`Cannot find credentials file in path ${file}. Follow the instruction to avoid this problem: https://code.roche.com/gigya-team/site-provisioner/-/blob/master/README.md#download-credentials-to-google-service-account`)
+        }
+    },
+
     async createFolder({ name, parent }) {
         const newFolder = await drive.files.create({
             auth,
