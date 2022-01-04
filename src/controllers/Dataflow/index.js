@@ -1,15 +1,19 @@
 import FormData from "form-data";
-import { etlAPI } from "../../api.js";
+import { api } from "../../api.js";
 import CONFIG from '../../config.js'
 import { Console } from "../../utils.js";
 
 const Dataflow = {
   async replaceVariables(template) {
+    Console.log('___ Replacing variables in Dataflows')
     template = JSON.stringify(template)
     template = template.replaceAll('[[COUNTRY_CODE]]', body.countryCode)
+    Console.log(`___ ✅ Replaced [[COUNTRY_CODE]] with ${body.countryCode}`)
     template = template.replaceAll('[[ACCESS_KEY]]', '<$AWSclientID$>')
+    Console.log(`___ ✅ Replaced [[ACCESS_KEY]] with <$AWSclientID$>`)
     template = template.replaceAll('[[SECRET_KEY]]', '<$AWSSecret$>')
     template = template.replaceAll('********', '<$AWSSecret$>')
+    Console.log(`___ ✅ Replaced [[SECRET_KEY]] with <$AWSSecret$>`)
 
     switch (environment.toLowerCase()) {
       case 'PROD':
@@ -22,21 +26,25 @@ const Dataflow = {
         template = template.replaceAll('[[ENV]]', environment.toLowerCase());
         break;
     }
+    Console.log(`___ ✅ Replaced [[ENV]] with proper environment`)
 
     template = JSON.parse(template)
     return template
   },
 
   async create(template) {
+    Console.log('22. Creating Dataflows')
     const data = new FormData();
     data.append("apiKey", apiKey)
     const temp = await this.replaceVariables(template)
     data.append("data", JSON.stringify(temp))
-    const response = await etlAPI(data, '/idx.createDataflow')
+    const response = await api.etl(data, '/idx.createDataflow')
+    Console.log('✅ Dataflows created')
     return response
   },
 
   async setScheduleInit(dataflowId) {
+    Console.log('23. Setting schedule for all records')
     const data = new FormData();
     data.append("apiKey", apiKey)
     data.append("data", JSON.stringify({
@@ -55,10 +63,12 @@ const Dataflow = {
       id: "Will be generated upon creation",
       logLevel: "info",
     }))
-    await etlAPI(data, '/idx.createScheduling')
+    await api.etl(data, '/idx.createScheduling')
+    Console.log('✅ Schedule for all records was created')
   },
 
   async setSchedule(dataflowId) {
+    Console.log('24. Setting schedule for delta records')
     const data = new FormData();
     data.append("apiKey", apiKey)
     data.append("data", JSON.stringify({
@@ -78,21 +88,23 @@ const Dataflow = {
       logLevel: "info",
       failureEmailNotification: environment !== 'SANDBOX' ? "marek.kowalonek@contractors.roche.com" : "sandbox@notexist.com"
     }))
-    await etlAPI(data, '/idx.createScheduling')
+    await api.etl(data, '/idx.createScheduling')
+    Console.log('✅ Schedule for delta records was created')
   },
 
   async getAll() {
+    Console.log('21. Retrieving Dataflows from Master Template')
     const data = new FormData();
     data.append("apiKey", CONFIG.MASTER_TEMPLATE.apiKey)
     data.append("query", `SELECT * FROM dataflow`)
-    const response = await etlAPI(data, '/idx.search', true)
-    Console.log(response)
+    const response = await api.etl(data, '/idx.search', true)
     const ETLs = response.result
       .filter(dataflow => dataflow.name.includes('CUG'))
       .map(({ name, steps, description }) => ({
         name, steps, description
       }))
 
+    Console.log('✅ Dataflows retrieved from Master Template')
     return ETLs
   }
 

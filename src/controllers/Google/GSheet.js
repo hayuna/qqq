@@ -20,8 +20,8 @@ const GSheet = {
     },
 
     async addPermissionsToProtectedCells({ fileId, emails }) {
+        Console.log('31. Adding permissions to protected cells');
         const protectedRangeIds = await this.getProtectedRangeIds({ fileId })
-        Console.log({protectedRangeIds, emails})
         const requests = protectedRangeIds.map((protectedRangeId) => {
             return {
                 updateProtectedRange: {
@@ -42,9 +42,11 @@ const GSheet = {
                 requests
             }
         })
+        Console.log(`✅ Protected ranges has been updated`);
     },
 
     async replaceCells({ fileId, country }) {
+        Console.log(`28. Changing cell: country full name into ${country.fullname}`);
         await sheets.spreadsheets.values.update({
             spreadsheetId: fileId,
             range: "CreateGroup!C2",
@@ -54,6 +56,9 @@ const GSheet = {
             valueInputOption: 'RAW',
             auth
         })
+        Console.log(`✅ Cell country full name was replaced`);
+
+        Console.log(`29. Changing cell: country ISO Code into ${country.ISOCode}`);
         await sheets.spreadsheets.values.update({
             spreadsheetId: fileId,
             range: "CreateGroup!C4",
@@ -63,9 +68,11 @@ const GSheet = {
             valueInputOption: 'RAW',
             auth
         })
+        Console.log(`✅ Cell country ISO Code was replaced`);  
     },
 
     async addSheetToList({fileId, country}){
+        Console.log('32. Adding GSheet to the list of CUG Gsheet')
         await sheets.spreadsheets.values.append({
             spreadsheetId: config.LIST,
             range: `${_.capitalize(environment)}!A:C`,
@@ -81,14 +88,17 @@ const GSheet = {
             },
             auth
         })
+        Console.log(`✅ GSheet has been updated`);
     },
 
     async getDevelopers(){
+        Console.log(`30. Retrieving developers`);
         const developers = await sheets.spreadsheets.values.get({
             spreadsheetId: config.LIST,
             range: "Developers!A:A",
             auth,
         })
+        Console.log(`✅ Developer have been Retrieved`);
         return developers.data.values.flat()
     }
 }

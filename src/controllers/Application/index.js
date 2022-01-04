@@ -5,29 +5,29 @@ import { Console } from "../../utils.js";
 
 const Application = {
     async create(siteName) {
-        Console.log(`15/18 Creating application into ${environment}`)
+        Console.log(`18. Creating application into ${environment}`)
         const data = new FormData();
         const applicationName = `${siteName}_${body.system}_created${this.generateCreationDate()}`.toLowerCase()
         data.append("name", applicationName)
         data.append("keyType", "highRate")
         data.append("ownerPartnerId", CONFIG[environment].partnerId)
 
-        const newApplication = await api(data, "/admin.createUserKey");
-        Console.log(`16/18 Application has been created in ${environment}`)
+        const newApplication = await api.admin(data, "/admin.createUserKey");
+        Console.log(`✅ Application has been created in ${environment}`)
 
         return newApplication
     },
 
     async assignToGroup(application) {
-        Console.log(`___ Adding application to group into ${environment}`)
+        Console.log(`19. Adding application to group into ${environment}`)
         const data = new FormData();
         data.append("partnerID", CONFIG[environment].partnerId)
         data.append("groupID", '_no_permissions')
         data.append("addUsers", JSON.stringify([application.userKey]))
 
-        const permissionGroup = await api(data, "/admin.updateGroup");
+        const permissionGroup = await api.admin(data, "/admin.updateGroup");
         permissionGroup.name = '_no_permissions'
-        Console.log(`___ Application has been added to group into ${environment}`)
+        Console.log(`✅ Application has been added to group into ${environment}`)
         return permissionGroup
     },
 
@@ -40,16 +40,19 @@ const Application = {
     },
 
     async isNameAvailable(name){
+        Console.log('4. Checking application name')
         const applicationName = `${name}_${body.system}_created${this.generateCreationDate()}`.toLowerCase()
         const data = new FormData();
         data.append("groupID", '_no_permissions')
         data.append("partnerID", CONFIG[environment].partnerId)
         
-        const applicationNames = await api(data, '/admin.getGroupUsers')
+        const applicationNames = await api.admin(data, '/admin.getGroupUsers')
         const found = applicationNames.users.find(application => application.name === applicationName)
         
         if(found) {
             throw new Error('❌ This name for application exists')
+        } else {
+            Console.log('✅ Application name is available')
         }
     }
     
