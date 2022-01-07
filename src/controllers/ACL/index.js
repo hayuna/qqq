@@ -2,7 +2,7 @@ import FormData from "form-data";
 import _ from 'lodash'
 import { api } from "../../api.js";
 import CONFIG from '../../config.js'
-import { Console } from "../../utils.js";
+import { Console, getPartnerIdKey, isRU } from "../../utils.js";
 
 const ACL = {
     async getAll() {
@@ -30,7 +30,7 @@ const ACL = {
       
         const source = fromMaster
           ? CONFIG.MASTER_TEMPLATE.partnerId
-          : CONFIG[environment].partnerId;
+          : CONFIG[environment][getPartnerIdKey()];
       
         data.append("partnerID", source);
       
@@ -66,11 +66,11 @@ const ACL = {
           return;
         }
         const data = new FormData();
-        data.append("partnerID", CONFIG[environment].partnerId);
+        data.append("partnerID", CONFIG[environment][getPartnerIdKey()]);
         data.append("aclID", aclId);
         data.append("acl", JSON.stringify(masterACL.acl));
         
-        const newACL = await api.admin(data, "/admin.setACL");
+        const newACL = await api.admin(data, "/admin.setACL", isRU());
         Console.log(`___ ${aclId} ACL has been saved to ${environment}`)
         return newACL
       },
@@ -82,11 +82,11 @@ const ACL = {
         standardApplicationACL.acl._inherit.push("_accountsFullAccess")
         
         const data = new FormData();
-        data.append("partnerID", CONFIG[environment].partnerId);
+        data.append("partnerID", CONFIG[environment][getPartnerIdKey()]);
         data.append("aclID", name);
         data.append("acl", JSON.stringify(standardApplicationACL.acl));
         
-        const newACL = await api.admin(data, "/admin.setACL");
+        const newACL = await api.admin(data, "/admin.setACL", isRU());
 
         Console.log(`✅ ACL has been created with name: ${name}`)
       },

@@ -1,7 +1,7 @@
 import FormData from "form-data";
 import { api } from "../../api.js";
 import CONFIG from '../../config.js'
-import { Console } from "../../utils.js";
+import { Console, isRU } from "../../utils.js";
 
 const Dataflow = {
   async replaceVariables(template) {
@@ -38,7 +38,7 @@ const Dataflow = {
     data.append("apiKey", apiKey)
     const temp = await this.replaceVariables(template)
     data.append("data", JSON.stringify(temp))
-    const response = await api.etl(data, '/idx.createDataflow')
+    const response = await api.etl(data, '/idx.createDataflow', false, isRU())
     Console.log('✅ Dataflows created')
     return response
   },
@@ -63,7 +63,7 @@ const Dataflow = {
       id: "Will be generated upon creation",
       logLevel: "info",
     }))
-    await api.etl(data, '/idx.createScheduling')
+    await api.etl(data, '/idx.createScheduling', false, isRU())
     Console.log('✅ Schedule for all records was created')
   },
 
@@ -88,7 +88,7 @@ const Dataflow = {
       logLevel: "info",
       failureEmailNotification: environment !== 'SANDBOX' ? "marek.kowalonek@contractors.roche.com" : "sandbox@notexist.com"
     }))
-    await api.etl(data, '/idx.createScheduling')
+    await api.etl(data, '/idx.createScheduling', false, isRU())
     Console.log('✅ Schedule for delta records was created')
   },
 

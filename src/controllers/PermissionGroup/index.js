@@ -1,7 +1,7 @@
 import FormData from "form-data";
 import { api } from "../../api.js";
 import CONFIG from '../../config.js'
-import { Console } from "../../utils.js";
+import { Console, getPartnerIdKey, isRU } from "../../utils.js";
 
 const delay = ms => {
     return new Promise(res => setTimeout(res, ms))
@@ -10,7 +10,7 @@ const delay = ms => {
 const PermissionGroup = {
     async recreate(application, domainName) {
         const data = new FormData();
-        data.append("partnerID", CONFIG[environment].partnerId)
+        data.append("partnerID", CONFIG[environment][getPartnerIdKey()])
         data.append("groupID", this.generatePermissionGroupName(domainName))
         data.append("aclID", this.generatePermissionGroupName(domainName))
 
@@ -19,7 +19,7 @@ const PermissionGroup = {
         }))
         data.append("setUsers", JSON.stringify([application.userKey]))
 
-        const permissionGroup = await api.admin(data, "/admin.createGroup");
+        const permissionGroup = await api.admin(data, "/admin.createGroup", isRU());
         permissionGroup.name = this.generatePermissionGroupName(domainName)
         return permissionGroup
     },
@@ -56,9 +56,9 @@ const PermissionGroup = {
         Console.log('5. Checking permission group name')
         const groupName = this.generatePermissionGroupName(name)
         const data = new FormData();
-        data.append("partnerID", CONFIG[environment].partnerId)
+        data.append("partnerID", CONFIG[environment][getPartnerIdKey()])
         
-        const groupNames = await api.admin(data, '/admin.getGroups')
+        const groupNames = await api.admin(data, '/admin.getGroups', isRU())
         const found = Object.keys(groupNames.groups).find((group) => group === groupName)
 
         if(found) {
@@ -71,11 +71,11 @@ const PermissionGroup = {
     async update(name) {
         const domainName = this.generatePermissionGroupName(name)
         const data = new FormData();
-        data.append("partnerID", CONFIG[environment].partnerId)
+        data.append("partnerID", CONFIG[environment][getPartnerIdKey()])
         data.append("groupID", domainName)
         data.append("aclID", domainName)
 
-        const permissionGroup = await api.admin(data, "/admin.updateGroup");
+        const permissionGroup = await api.admin(data, "/admin.updateGroup", isRU());
         return permissionGroup
     },
 }

@@ -1,7 +1,7 @@
 import FormData from "form-data";
 import { api } from "../../api.js";
 import CONFIG from '../../config.js'
-import { Console } from "../../utils.js";
+import { Console, isRU } from "../../utils.js";
 
 const WebSDK = {
     async get() {
@@ -23,7 +23,7 @@ const WebSDK = {
         masterWebSDK = this.replaceVariablesInWebSDK(masterWebSDK)
         data.append('globalConf', masterWebSDK)
 
-        const response = await api.admin(data, '/admin.setSiteConfig')
+        const response = await api.admin(data, '/admin.setSiteConfig', isRU())
         Console.log('✅ WebSDK was set')
         return response
     },

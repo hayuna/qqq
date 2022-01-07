@@ -1,6 +1,6 @@
 import FormData from "form-data";
 import { api } from "../../api.js";
-import { Console } from "../../utils.js";
+import { Console, isRU } from "../../utils.js";
 
 const Policy = {
     async setEmailVerification() {
@@ -20,7 +20,7 @@ const Policy = {
         data.append('accountOptions', JSON.stringify(accountOptions))
         data.append('emailVerification', JSON.stringify(emailVerification))
 
-        const response = await api.accounts(data, '/accounts.setPolicies')
+        const response = await api.accounts(data, '/accounts.setPolicies', false, isRU())
         Console.log('___ ✅ Require email verification was enabled')
         Console.log('___ ✅ Require email verification after social login was disabled')
         Console.log('___ ✅ Customize verification link expiration time was set to 24h')

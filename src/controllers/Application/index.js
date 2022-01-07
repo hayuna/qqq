@@ -1,7 +1,7 @@
 import FormData from "form-data";
 import { api } from "../../api.js";
 import CONFIG from '../../config.js'
-import { Console } from "../../utils.js";
+import { Console, getPartnerIdKey, isRU } from "../../utils.js";
 
 const Application = {
     async create(siteName) {
@@ -10,9 +10,9 @@ const Application = {
         const applicationName = `${siteName}_${body.system}_created${this.generateCreationDate()}`.toLowerCase()
         data.append("name", applicationName)
         data.append("keyType", "highRate")
-        data.append("ownerPartnerId", CONFIG[environment].partnerId)
+        data.append("ownerPartnerId", CONFIG[environment][getPartnerIdKey()])
 
-        const newApplication = await api.admin(data, "/admin.createUserKey");
+        const newApplication = await api.admin(data, "/admin.createUserKey", isRU());
         Console.log(`✅ Application has been created in ${environment}`)
 
         return newApplication
@@ -21,11 +21,11 @@ const Application = {
     async assignToGroup(application) {
         Console.log(`19. Adding application to group into ${environment}`)
         const data = new FormData();
-        data.append("partnerID", CONFIG[environment].partnerId)
+        data.append("partnerID", CONFIG[environment][getPartnerIdKey()])
         data.append("groupID", '_no_permissions')
         data.append("addUsers", JSON.stringify([application.userKey]))
 
-        const permissionGroup = await api.admin(data, "/admin.updateGroup");
+        const permissionGroup = await api.admin(data, "/admin.updateGroup", isRU());
         permissionGroup.name = '_no_permissions'
         Console.log(`✅ Application has been added to group into ${environment}`)
         return permissionGroup
@@ -44,9 +44,9 @@ const Application = {
         const applicationName = `${name}_${body.system}_created${this.generateCreationDate()}`.toLowerCase()
         const data = new FormData();
         data.append("groupID", '_no_permissions')
-        data.append("partnerID", CONFIG[environment].partnerId)
+        data.append("partnerID", CONFIG[environment][getPartnerIdKey()])
         
-        const applicationNames = await api.admin(data, '/admin.getGroupUsers')
+        const applicationNames = await api.admin(data, '/admin.getGroupUsers', isRU())
         const found = applicationNames.users.find(application => application.name === applicationName)
         
         if(found) {

@@ -7,13 +7,18 @@ const agent = new https.Agent({
 });
 
 export const api = {
-  async admin(data, url) {
-    data.append("secret", body.secret);
-    data.append("userKey", body.userKey);
+  async admin(data, url, isRU) {
+    if (isRU) {
+      data.append("secret", body.secretRU);
+      data.append("userKey", body.userKeyRU);
+    } else {
+      data.append("secret", body.secret);
+      data.append("userKey", body.userKey);
+    }
 
     const config = {
       method: "post",
-      url: `https://accounts.us1.gigya.com${url}`,
+      url: `https://admin.${dataCenterInURL(body.dataCenter)}.gigya.com${url}`,
       headers: {
         ...data.getHeaders(),
       },
@@ -29,9 +34,14 @@ export const api = {
     }
   },
 
-  async accounts(data, url, fromMaster) {
-    data.append("secret", body.secret);
-    data.append("userKey", body.userKey);
+  async accounts(data, url, fromMaster, isRU) {
+    if (isRU) {
+      data.append("secret", body.secretRU);
+      data.append("userKey", body.userKeyRU);
+    } else {
+      data.append("secret", body.secret);
+      data.append("userKey", body.userKey);
+    }
 
     const config = {
       method: "post",
@@ -51,9 +61,14 @@ export const api = {
     }
   },
 
-  async etl(data, url, fromMaster) {
-    data.append("secret", body.secret);
-    data.append("userKey", body.userKey);
+  async etl(data, url, fromMaster, isRU) {
+    if (isRU) {
+      data.append("secret", body.secretRU);
+      data.append("userKey", body.userKeyRU);
+    } else {
+      data.append("secret", body.secret);
+      data.append("userKey", body.userKey);
+    }
 
     const config = {
       method: "post",
@@ -73,9 +88,14 @@ export const api = {
     }
   },
 
-  async socialize(data, url, fromMaster){
-    data.append("secret", body.secret);
-    data.append("userKey", body.userKey);
+  async socialize(data, url, fromMaster, isRU){
+    if (isRU) {
+      data.append("secret", body.secretRU);
+      data.append("userKey", body.userKeyRU);
+    } else {
+      data.append("secret", body.secret);
+      data.append("userKey", body.userKey);
+    }
 
     const config = {
       method: "post",
