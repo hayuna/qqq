@@ -1,6 +1,6 @@
 import axios from "axios";
 import https from "https";
-import { dataCenterConverter, Console } from "./utils.js";
+import { dataCenterConverter, Console, dataCenterInURL } from "./utils.js";
 
 const agent = new https.Agent({
   rejectUnauthorized: false
