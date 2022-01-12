@@ -109,4 +109,6 @@ const create = async (environment) => {
     }
   })
 
+  Console.log(`🏆 Congratulations. You did it!\n`)
+
 }
