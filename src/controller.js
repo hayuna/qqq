@@ -25,7 +25,7 @@ export const createSite = async (req, res) => {
     // await create('PROD')
     res.status(200).json({ message: 'OK' });
   } catch (error) {
-    Console.error(error.message);
+    Console.error(error);
     res.status(500).json({ message: error.message });
   }
 };

@@ -34,7 +34,7 @@ const ACL = {
       
         data.append("partnerID", source);
       
-        const ACL = await api.admin(data, "/admin.getACL");
+        const ACL = await api.admin(data, "/admin.getACL", isRU());
         ACL.name = aclId
         if(fromMaster){
           Console.log(`___ ${aclId} ACL has been retrieved from Master Template`)
@@ -78,15 +78,26 @@ const ACL = {
       async create(domainName){
         Console.log('17. Creating new ACL')
         const name = `api_${domainName}_${body.system}`.toLowerCase();
-        const standardApplicationACL = await this.get('standard_application', true)
-        standardApplicationACL.acl._inherit.push("_accountsFullAccess")
         
         const data = new FormData();
-        data.append("partnerID", CONFIG[environment][getPartnerIdKey()]);
-        data.append("aclID", name);
-        data.append("acl", JSON.stringify(standardApplicationACL.acl));
+        data.append("aclID", 'standard_application');
+      
+        const source = CONFIG.MASTER_TEMPLATE.partnerId;
+      
+        data.append("partnerID", source);
+      
+        const ACL = await api.admin(data, "/admin.getACL");
+        ACL.name = 'standard_application'
+        const standardApplicationACL = ACL;
+
+        standardApplicationACL.acl._inherit.push("_accountsFullAccess")
         
-        const newACL = await api.admin(data, "/admin.setACL", isRU());
+        const data2 = new FormData();
+        data2.append("partnerID", CONFIG[environment][getPartnerIdKey()]);
+        data2.append("aclID", name);
+        data2.append("acl", JSON.stringify(standardApplicationACL.acl));
+        
+        const newACL = await api.admin(data2, "/admin.setACL", isRU());
 
         Console.log(`✅ ACL has been created with name: ${name}`)
       },
