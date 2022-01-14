@@ -12,8 +12,6 @@ export const api = {
     let userKey = body.userKey
     let secret = body.secret
 
-    console.log({url, isRU})
-
     // all admin endpoints for RU has dc ru1, but getSiteConfig retrieved from US/EU should have us1
     if (url === '/admin.getSiteConfig') {
       dc = 'us1'
@@ -33,7 +31,6 @@ export const api = {
       }
     }
 
-    console.log({userKey, secret})
     data.append("secret", secret);
     data.append("userKey", userKey);
 
