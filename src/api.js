@@ -45,7 +45,6 @@ export const api = {
     };
 
     try {
-      console.log(config.url)
       const response = await axios(config);
       return response.data;
     } catch (e) {
