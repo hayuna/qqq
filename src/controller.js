@@ -10,6 +10,7 @@ import { Console } from './utils.js'
 import dotenv from 'dotenv'
 import Policy from './controllers/Policy/index.js'
 import Screenset from './controllers/Screenset/index.js'
+import Email from './controllers/Email/index.js'
 
 dotenv.config()
 
@@ -39,11 +40,19 @@ const create = async (environment) => {
   await Application.isNameAvailable(domainName)
   await PermissionGroup.isNameAvailable(domainName)
   await Google.GDrive.checkCredentials()
+  Email.checkGitlabToken()
 
   const site = await Site.create(domainName)
   global.apiKey = site.apiKey
   await Site.connectWithParent()
 
+  const emailLanguages = body.language.split(',')
+  for(const lang of emailLanguages){
+    const emails = await Email.retrieve(domainName, lang)
+    await Email.set(emails, lang)
+  
+  }
+  
   const screensets = await Screenset.getAll()
   await Screenset.set(screensets)
 

@@ -35,6 +35,17 @@ Click Create
 Move downloaded file to src/controllers/Google/credentials.json
 ```
 
+### Get GITLAB_TOKEN required to set Email Templates
+
+```bash
+Go to address https://code.roche.com/gigya-team/gigya-email-templates/-/settings/ci_cd
+Expand section Variables
+Find variable  GITLAB_TOKEN
+Click on the pen icon
+Copy Value
+Move copied value to .env file GITLAB_TOKEN=`coppied value`
+```
+
 ### Create .env file
 
 ```bash
@@ -64,9 +75,9 @@ If you want to avoid adding gigya userKey and secret inside request, you can cre
 | :--- | :--- | :--- | :--- |
 | `dataCenter` | `string` | ✔ | Available values (EU, US) |
 | `countryCode` | `string(10)` | ✔ |  |
-| `language` | `string(5) or array of string(5)` | ✔ |  |
+| `language` | `string(5)` | ✔ | If more than 1 lang, separate using `,` without spaces. Last one will be default in Email Templates |
 | `system` | `string(10)` | ✔ |  |
-| `purpose` | `string(15)` |  |  |
+| `purpose` | `string` |  |  |
 | `userKey` | `string` |  | Must be specified in request or .env file |
 | `secret` | `string` |  | Must be specified in request or .env file |
 | `multicountry` | `boolean` |  | Default `false`|

@@ -14,7 +14,8 @@ const GDrive = {
             await access(file, fs.constants.R_OK)
             Console.log('✅ Google Credentials file was found')
         } catch(e) {
-            throw new Error(`❌ Cannot find credentials file in path ${file}. Follow the instruction to avoid this problem: https://code.roche.com/gigya-team/site-provisioner/-/blob/master/README.md#download-credentials-to-google-service-account`)
+            throw new Error(`❌ Cannot find credentials file in path ${file}. Follow the instruction to avoid this problem: 
+            https://code.roche.com/gigya-team/site-provisioner/-/blob/master/README.md#download-credentials-to-google-service-account`)
         }
     },
 
