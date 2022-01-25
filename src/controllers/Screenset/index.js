@@ -1,24 +1,27 @@
 import FormData from "form-data";
-import { screenSetsAPI } from "../../api.js";
+import { api } from "../../api.js";
 import CONFIG from '../../config.js'
-import { Console } from "../../utils.js";
+import { Console, setCredentials, isRU } from "../../utils.js";
 
 const Screenset = {
     async getAll() {
-        const data = new FormData();
+        Console.log('9. Retrieving screenSets from Master Template')
+        let data = new FormData();
         data.append("apiKey", CONFIG.MASTER_TEMPLATE.apiKey);
         data.append("include", 'html,css,javascript,translations,metadata,screenSetID');
 
-        const masterScreenSets = await screenSetsAPI(data, '/accounts.getScreenSets', true)
-        Console.log(`8/18 ScreenSets from Master Template was retrieved`)
+        const masterScreenSets = await api.accounts(data, '/accounts.getScreenSets', true)
+        Console.log(`✅ ScreenSets from Master Template were retrieved`)
         return masterScreenSets
     },
 
     async set(screenSetConfig) {
+        Console.log('10. Set screenSets from Master Template')
         for (let i = 0; i < screenSetConfig.screenSets.length; i++) {
             const screenSet = screenSetConfig.screenSets[i]
 
-            const data = new FormData();
+            let data = new FormData();
+            data = setCredentials(data)
             data.append('apiKey', apiKey)
             data.append('screenSetID', screenSet.screenSetID)
             data.append('html', screenSet.html)
@@ -28,8 +31,8 @@ const Screenset = {
             data.append("metadata", JSON.stringify(screenSet.metadata))
             data.append('comment', 'Copied By Site Provisioner')
             data.append('format', 'json')
-            await screenSetsAPI(data, '/accounts.setScreenSet')
-            Console.log(`${screenSet.screenSetID} was added`)
+            await api.accounts(data, '/accounts.setScreenSet', false, isRU())
+            Console.log(`___ ✅ ${screenSet.screenSetID} was set`)
         }
     },
 }

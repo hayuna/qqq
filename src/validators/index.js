@@ -9,6 +9,8 @@ export const schema = Joi
     purpose: Joi.string().max(15),
     userKey: Joi.string(),
     secret: Joi.string(),
+    userKeyRU: Joi.string(),
+    secretRU: Joi.string(),
     multicountry: Joi.boolean().default(false),
     countryFullname: Joi.string().required()
   })

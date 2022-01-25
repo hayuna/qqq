@@ -2,11 +2,11 @@ import FormData from "form-data";
 import _ from 'lodash'
 import { api } from "../../api.js";
 import CONFIG from '../../config.js'
-import { Console } from "../../utils.js";
+import { Console, getPartnerIdKey, isRU } from "../../utils.js";
 
 const ACL = {
     async getAll() {
-        Console.log('11/18 Retrieve ACLs from Master Template')
+        Console.log('15. Retrieving ACLs from Master Template')
         const listOfACL = []
       
         const calls = []
@@ -19,7 +19,7 @@ const ACL = {
         response.forEach(ACL => {
           listOfACL[ACL.name] = ACL
         })
-        Console.log('12/18 ACLs have been retrieved from Master Template')
+        Console.log('✅ ACLs have been retrieved from Master Template')
       
         return listOfACL;
       },
@@ -30,11 +30,11 @@ const ACL = {
       
         const source = fromMaster
           ? CONFIG.MASTER_TEMPLATE.partnerId
-          : CONFIG[environment].partnerId;
+          : CONFIG[environment][getPartnerIdKey()];
       
         data.append("partnerID", source);
       
-        const ACL = await api(data, "/admin.getACL");
+        const ACL = await api.admin(data, "/admin.getACL", isRU());
         ACL.name = aclId
         if(fromMaster){
           Console.log(`___ ${aclId} ACL has been retrieved from Master Template`)
@@ -45,14 +45,14 @@ const ACL = {
       },
       
       async setAll(ACLs) {
-        Console.log(`13/18 Saving ACLs into ${environment}`)
+        Console.log(`16. Saving ACLs into ${environment}`)
         const calls = []
         CONFIG[environment].ACLs.forEach((aclId) => {
           calls.push(this.set(aclId, ACLs))
         })
       
         const response = await Promise.all(calls)
-        Console.log(`14/18 ACLs have been saved into ${environment}`)
+        Console.log(`✅ ACLs have been saved into ${environment}`)
         return response;
       },
       
@@ -62,31 +62,44 @@ const ACL = {
         const siteACL = await this.get(aclId);
       
         if(this.compareACLs(masterACL.acl, siteACL.acl)) {
-          Console.log(`___ ⏭ ${aclId} ACL skipped - it's equal to the one from Master Template `)
+          Console.log(`___ ⏭  ${aclId} ACL skipped - it's equal to the one from Master Template `)
           return;
         }
         const data = new FormData();
-        data.append("partnerID", CONFIG[environment].partnerId);
+        data.append("partnerID", CONFIG[environment][getPartnerIdKey()]);
         data.append("aclID", aclId);
         data.append("acl", JSON.stringify(masterACL.acl));
         
-        const newACL = await api(data, "/admin.setACL");
+        const newACL = await api.admin(data, "/admin.setACL", isRU());
         Console.log(`___ ${aclId} ACL has been saved to ${environment}`)
         return newACL
       },
 
       async create(domainName){
+        Console.log('17. Creating new ACL')
         const name = `api_${domainName}_${body.system}`.toLowerCase();
-        const standardApplicationACL = await this.get('standard_application', true)
-        standardApplicationACL.acl._inherit.push("_accountsFullAccess")
         
         const data = new FormData();
-        data.append("partnerID", CONFIG[environment].partnerId);
-        data.append("aclID", name);
-        data.append("acl", JSON.stringify(standardApplicationACL.acl));
+        data.append("aclID", 'standard_application');
+      
+        const source = CONFIG.MASTER_TEMPLATE.partnerId;
+      
+        data.append("partnerID", source);
+      
+        const ACL = await api.admin(data, "/admin.getACL");
+        ACL.name = 'standard_application'
+        const standardApplicationACL = ACL;
+
+        standardApplicationACL.acl._inherit.push("_accountsFullAccess")
         
-        const newACL = await api(data, "/admin.setACL");
-        console.log({newACL})
+        const data2 = new FormData();
+        data2.append("partnerID", CONFIG[environment][getPartnerIdKey()]);
+        data2.append("aclID", name);
+        data2.append("acl", JSON.stringify(standardApplicationACL.acl));
+        
+        const newACL = await api.admin(data2, "/admin.setACL", isRU());
+
+        Console.log(`✅ ACL has been created with name: ${name}`)
       },
 
       compareACLs(masterACL, environmentACL) {

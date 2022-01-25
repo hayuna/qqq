@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
  
+## [1.6.0] - IN PROGRESS
+
+### Added
+- 🛠 Added support for Russia partner
+
+### Changed
+- ♻️ Replace API methods into one main with submethods API.socialize(), API.admin(), API.accounts()
 ## [1.5.0] - 2022-01-04
  
 ### Added
