@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
  
-## [1.6.0] - IN PROGRESS
+## [1.6.0] - 2022-01-25
 
 ### Added
 - 🛠 Added support for Russia partner
