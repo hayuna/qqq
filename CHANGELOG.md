@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - ♻️ Change format of language in request. Array is not supported yet. You should use string separated by comma to support more than one language
 
-## [1.6.0] - IN PROGRESS
+## [1.6.0] - 2022-01-25
 
 ### Added
 - 🛠 Added support for Russia partner
