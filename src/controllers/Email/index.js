@@ -23,11 +23,13 @@ const generateFileName = async (type, domainName, lang) => {
         language = 'en'
     }
 
+    const countryFullname = body.countryFullname.toLowerCase()
+
     const branch = generateBranch()
     const possibleFiles = [
-        `/files/${encodeURIComponent(`${domainName}/${environment.toLowerCase()}_${type}_${body.countryFullname}_${language}.html`)}/raw?ref=${branch}`,
+        `/files/${encodeURIComponent(`${domainName}/${environment.toLowerCase()}_${type}_${countryFullname}_${language}.html`)}/raw?ref=${branch}`,
         // safety path when emails has no multilanguage
-        `/files/${encodeURIComponent(`${domainName}/${environment.toLowerCase()}_${type}_${body.countryFullname}.html`)}/raw?ref=${branch}`,
+        `/files/${encodeURIComponent(`${domainName}/${environment.toLowerCase()}_${type}_${countryFullname}.html`)}/raw?ref=${branch}`,
         // safety path when emails has no country full name
         `/files/${encodeURIComponent(`${domainName}/${environment.toLowerCase()}_${type}.html`)}/raw?ref=${branch}`,
         // safety path when emails for country not exist yet
@@ -105,6 +107,7 @@ const Email = {
         }
     },
     async set(emails, lang){
+        lang = lang.toUpperCase()
         Console.log('setting emails')
 
         const data = new FormData()
