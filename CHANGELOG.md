@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.8.0] - 2022-02-22
+
+### Added
+- 🛠 Added support for setting token expiration for reset password
+
 ## [1.7.0] - 2022-02-22
 
 ### Added
