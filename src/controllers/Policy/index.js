@@ -15,10 +15,14 @@ const Policy = {
             verificationEmailExpiration: 86400, // Customize verification link expiration time
             autoLogin: true                     // Automatically login users upon email verification
         }
+        const passwordReset = {
+            tokenExpiration: 3600
+        }
         const data = new FormData()
         data.append('apiKey', apiKey)
         data.append('accountOptions', JSON.stringify(accountOptions))
         data.append('emailVerification', JSON.stringify(emailVerification))
+        data.append('passwordReset', JSON.stringify(passwordReset))
 
         const response = await api.accounts(data, '/accounts.setPolicies', false, isRU())
         Console.log('___ ✅ Require email verification was enabled')
