@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.7.0] - IN PROGRESS
+## [1.7.0] - 2022-02-22
 
 ### Added
 - 🛠 Added support for copying Email Templates from gitlab repository
