@@ -4,9 +4,9 @@ export const schema = Joi
   .object({
     dataCenter: Joi.string().valid('EU', 'US', 'CN', 'RU').required(),
     countryCode: Joi.string().max(10).required(),
-    language: Joi.alternatives().try(Joi.array().items(Joi.string().max(5)), Joi.string().max(5)).required(),
+    language: Joi.string().required(),
     system: Joi.string().max(10).required(),
-    purpose: Joi.string().max(15),
+    purpose: Joi.string(),
     userKey: Joi.string(),
     secret: Joi.string(),
     userKeyRU: Joi.string(),
