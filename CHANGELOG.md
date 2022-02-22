@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.9.0] - IN PROGRESS
+
+### Added
+- 🛠 Added support for social media configuration
+
 ## [1.8.0] - 2022-02-22
 
 ### Added

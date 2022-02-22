@@ -9,6 +9,7 @@ import Auth from './controllers/Auth/index.js'
 import { Console } from './utils.js'
 import dotenv from 'dotenv'
 import Policy from './controllers/Policy/index.js'
+import Socials from './controllers/Socials/index.js'
 import Screenset from './controllers/Screenset/index.js'
 import Email from './controllers/Email/index.js'
 
@@ -81,6 +82,12 @@ const create = async (environment) => {
   await Dataflow.setScheduleInit(exportDataflow.id)
   await Dataflow.setSchedule(exportDataflow.id)
 
+  // Experimental, not confirmed in official docs
+  // SKIP for prod
+  if(environment !== 'PROD'){
+    const socials = await Socials.get()
+    await Socials.set(socials)  
+  }
 
   const copiedBlueprint = await Google.GDrive.makeACopy({ fileId: Google.config.BP })
 
