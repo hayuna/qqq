@@ -9,6 +9,7 @@ const Socials = {
         data.append('includeSettings', 'true')
         data.append('includeCapabilities', 'true')
         data.append('includeSecretKeys', 'true')
+        data.append('format', 'json')
         
         const response = await api.socialize(data, '/socialize.getProvidersConfig')
         const socials = {
