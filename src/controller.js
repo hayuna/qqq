@@ -47,12 +47,13 @@ const create = async (environment) => {
   global.apiKey = site.apiKey
   await Site.connectWithParent()
 
-  const emailLanguages = body.language.split(',')
-  for(const lang of emailLanguages){
-    const emails = await Email.retrieve(domainName, lang)
-    await Email.set(emails, lang)
+  // TO FIX
+  // const emailLanguages = body.language.split(',')
+  // for(const lang of emailLanguages){
+  //   const emails = await Email.retrieve(domainName, lang)
+  //   await Email.set(emails, lang)
   
-  }
+  // }
   
   const screensets = await Screenset.getAll()
   await Screenset.set(screensets)
