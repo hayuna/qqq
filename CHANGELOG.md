@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.9.0] - IN PROGRESS
+
+### Added
+- 🛠 Added support for social media configuration (for non prod env)
+- 🛠 Added support for R4 & R5 test environment
+
 ## [1.8.0] - 2022-02-22
 
 ### Added

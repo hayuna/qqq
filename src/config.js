@@ -33,6 +33,19 @@ export default {
         partnerId: '44923402',
         partnerIdRU: '71972968',
         parentApiKey: {
+            EU: '4_g4WLNw4dL_qHj7XTvi7RmA', 
+            US: '4_PafZpbGVMYsOtRKoNlp89Q', 
+            CN: '', 
+            RU: '4_5aKT8thrHCCt8H6FRpro5w'
+        },
+        ACLs: ['_admins', 'developers', 'mulesoft', 'standard_application']
+    },
+    // replace TEST_R4 with TEST when need to use R4
+    TEST_R4: {
+        order: 5,
+        partnerId: '44923402',
+        partnerIdRU: '71972968',
+        parentApiKey: {
             EU: '3_zJd-t-fM7yiVS37vhCfC_XHSfY7Ij_vuXi8OLIe9_wXmqCkFJvKF96Tdxhfz6PGj', 
             US: '3_YV2D9-dfDpKhRKXW9DWFfb2YEplCjAPH3zX3xrngizC_7RaSV19p_iGD5pYJb8BF', 
             CN: '', 
@@ -41,7 +54,7 @@ export default {
         ACLs: ['_admins', 'developers', 'mulesoft', 'standard_application']
     },
     PROD: {
-        order: 5,
+        order: 6,
         partnerId: '55994808',
         partnerIdRU: '71972968',
         parentApiKey: {
