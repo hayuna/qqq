@@ -11,7 +11,7 @@ const Socials = {
         data.append('includeSecretKeys', 'true')
         data.append('format', 'json')
         
-        const response = await api.socialize(data, '/socialize.getProvidersConfig')
+        const response = await api.socialize(data, '/socialize.getProvidersConfig', true)
         const socials = {
             facebook: response.providers.facebook,
             googleplus: response.providers.googleplus,
