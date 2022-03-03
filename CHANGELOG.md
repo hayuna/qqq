@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.9.0] - IN PROGRESS
+## [1.9.0] - 2022-03-03
 
 ### Added
 - 🛠 Added support for social media configuration (for non prod env)
