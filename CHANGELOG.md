@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.10.0] - IN PROGRESS
+
+### Added
+- 🛠 Added support for flag to turn on/off GDrive stuff
+- 🛠 Store Google privatekey in repository secrets to avoid downloading whole json with credentials (in the future credentials.json will be deprecated)
+
+### Fixed
+- 🐛 Fix Email Templates support
+
 ## [1.9.0] - 2022-03-03
 
 ### Added

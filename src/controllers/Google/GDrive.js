@@ -9,11 +9,29 @@ import { Console } from '../../utils.js';
 const GDrive = {
     async checkCredentials(){
         Console.log('6. Checking google credentials')
+        const cannotFind = {}
+        if (!process.env.GOOGLE_PRIVATE_KEY) {
+            cannotFind.GOOGLE_PRIVATE_KEY = true
+        } else {
+            Console.log('✅ GOOGLE_PRIVATE_KEY was set')
+            return
+        }
+
         const file = 'src/controllers/Google/credentials.json'
         try{
             await access(file, fs.constants.R_OK)
             Console.log('✅ Google Credentials file was found')
+            return
         } catch(e) {
+            cannotFind.CREDENTIALS_FILE = true
+        }
+
+        if(cannotFind.GOOGLE_PRIVATE_KEY) {
+            throw new Error(`❌ Cannot find GOOGLE_PRIVATE_KEY to connect with Google Drive / Google Sheets. Please add key GOOGLE_PRIVATE_KEY to .env file. Instruction how to retrieve it you can find here: 
+            https://code.roche.com/gigya-team/site-provisioner/-/blob/master/README.md#get-private-key-to-google`)
+        } 
+
+        if(cannotFind.CREDENTIALS_FILE) {
             throw new Error(`❌ Cannot find credentials file in path ${file}. Follow the instruction to avoid this problem: 
             https://code.roche.com/gigya-team/site-provisioner/-/blob/master/README.md#download-credentials-to-google-service-account`)
         }

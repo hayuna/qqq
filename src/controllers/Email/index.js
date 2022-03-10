@@ -106,41 +106,133 @@ const Email = {
             passwordResetConfirmationEmailTemplate
         }
     },
-    async set(emails, lang){
-        lang = lang.toUpperCase()
-        Console.log('setting emails')
+    async setPasswordResetEmailTemplate(template, lang){
+        Console.log('setting emails password reset')
+
+        const data = new FormData()
+        data.append('apiKey', apiKey)
+        data.append('passwordReset', JSON.stringify({
+            EmailTemplates: {
+                [lang.toLowerCase()]: template
+            },
+            ResetURL: ''
+        }))
+        await api.accounts(data, '/accounts.policies.emailTemplates.setConfig', false, false)
+
+        const data2 = new FormData()
+        data2.append('apiKey', apiKey)
+        data2.append('passwordReset', JSON.stringify({
+            EmailTemplates: {
+                [lang.toLowerCase()]: template
+            },
+            DefaultLanguage:lang.toLowerCase(),
+            ResetURL: ''
+        }))
+        await api.accounts(data2, '/accounts.policies.emailTemplates.setConfig', false, false)
+    },
+    async setPasswordResetConfirmationEmailTemplate(template, lang){
+        Console.log('setting emails password reset confirmation')
 
         const data = new FormData()
         data.append('apiKey', apiKey)
         data.append('emailNotifications', JSON.stringify({
-            welcomeEmailTemplates: {
-                [lang]: emails.newUserWelcomeEmailTemplate
+            ConfirmationEmailTemplates: {
+                [lang.toLowerCase()]: template
             },
-            confirmationEmailTemplates: {
-                [lang]: emails.passwordResetConfirmationEmailTemplate
-            },
-            accountDeletedEmailTemplates: {
-                [lang]: emails.accountDeletionConfirmationEmailTemplate
-            },
-            accountDeletedEmailDefaultLanguage: lang,
-            confirmationEmailDefaultLanguage: lang,
-            welcomeEmailDefaultLanguage: lang
-        }))
-        data.append('emailVerification', JSON.stringify({
-            emailTemplates: {
-                [lang]: emails.emailVerificationEmailTemplate
-            },
-            defaultLanguage: lang
-        }))
-        data.append('passwordReset', JSON.stringify({
-            emailTemplates: {
-                [lang]: emails.passwordResetEmailTemplate
-            },
-            defaultLanguage: lang,
-            resetURL: ''
+            
         }))
         await api.accounts(data, '/accounts.policies.emailTemplates.setConfig', false, false)
-        Console.log('✅ Email Templates have been saved')
+        
+
+        const data2 = new FormData()
+        data2.append('apiKey', apiKey)
+        data2.append('emailNotifications', JSON.stringify({
+            ConfirmationEmailTemplates: {
+                [lang.toLowerCase()]: template
+            },
+            ConfirmationEmailDefaultLanguage: lang.toLowerCase(),
+        }))
+        await api.accounts(data2, '/accounts.policies.emailTemplates.setConfig', false, false)
+    },
+    async setNewUserWelcomeEmailTemplate(template, lang){
+        Console.log('setting emails new user welcome')
+
+        const data = new FormData()
+        data.append('apiKey', apiKey)
+        data.append('emailNotifications', JSON.stringify({
+            WelcomeEmailTemplates: {
+                [lang.toLowerCase()]: template
+            },
+        }))
+        await api.accounts(data, '/accounts.policies.emailTemplates.setConfig', false, false)
+        
+
+        const data2 = new FormData()
+        data2.append('apiKey', apiKey)
+        data2.append('emailNotifications', JSON.stringify({
+            WelcomeEmailTemplates: {
+                [lang.toLowerCase()]: template
+            },
+            WelcomeEmailDefaultLanguage: lang.toLowerCase()
+        }))
+        await api.accounts(data2, '/accounts.policies.emailTemplates.setConfig', false, false)
+
+    },
+    async setAccountDeletionEmailTemplate(template, lang){
+        Console.log('setting emails account deletion')
+
+        const data = new FormData()
+        data.append('apiKey', apiKey)
+        data.append('emailNotifications', JSON.stringify({
+            AccountDeletedEmailTemplates: {
+                [lang.toLowerCase()]: template
+            },
+        }))
+        await api.accounts(data, '/accounts.policies.emailTemplates.setConfig', false, false)
+
+
+        const data2 = new FormData()
+        data2.append('apiKey', apiKey)
+        data2.append('emailNotifications', JSON.stringify({
+            AccountDeletedEmailTemplates: {
+                [lang.toLowerCase()]: template
+            },
+            AccountDeletedEmailDefaultLanguage: lang.toLowerCase(),
+        }))
+        await api.accounts(data2, '/accounts.policies.emailTemplates.setConfig', false, false)
+    },
+    async setEmailVerificationEmailTemplate(template, lang){
+        Console.log('setting emails verification')
+        const data = new FormData()
+        data.append('apiKey', apiKey)
+        data.append('emailVerification', JSON.stringify({
+            EmailTemplates: {
+                [lang.toLowerCase()]: template
+            },
+        }))
+        await api.accounts(data, '/accounts.policies.emailTemplates.setConfig', false, false)
+
+
+        const data2 = new FormData()
+        data2.append('apiKey', apiKey)
+        data2.append('emailVerification', JSON.stringify({
+            EmailTemplates: {
+                [lang.toLowerCase()]: template
+            },
+            DefaultLanguage: lang.toLowerCase()
+        }))
+        await api.accounts(data2, '/accounts.policies.emailTemplates.setConfig', false, false)
+
+
+    },
+    async set(emails, lang){
+        await this.setPasswordResetEmailTemplate(emails.passwordResetEmailTemplate, lang)
+        await this.setPasswordResetConfirmationEmailTemplate(emails.passwordResetConfirmationEmailTemplate, lang)
+        await this.setNewUserWelcomeEmailTemplate(emails.newUserWelcomeEmailTemplate, lang)
+        await this.setAccountDeletionEmailTemplate(emails.accountDeletionConfirmationEmailTemplate, lang)
+        await this.setEmailVerificationEmailTemplate(emails.emailVerificationEmailTemplate, lang)
+        
+        Console.log(`✅ Email Templates have been saved [${lang}]`)
     },
 }
 

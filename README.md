@@ -35,6 +35,17 @@ Click Create
 Move downloaded file to src/controllers/Google/credentials.json
 ```
 
+### Get private key to Google
+
+```bash
+Go to address https://code.roche.com/gigya-team/site-provisioner/-/settings/ci_cd
+Expand section Variables
+Find variable  GOOGLE_PRIVATE_KEY
+Click on the pen icon
+Copy Value
+Move copied value to .env file GOOGLE_PRIVATE_KEY=`coppied value`
+```
+
 ### Get GITLAB_TOKEN required to set Email Templates
 
 ```bash

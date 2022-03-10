@@ -18,6 +18,9 @@ dotenv.config()
 export const createSite = async (req, res) => {
   try {
     global.body = req.body
+    global.flags = {
+      useGDrive: true
+    }
 
     await Auth.login()
 
@@ -44,16 +47,16 @@ const create = async (environment) => {
   Email.checkGitlabToken()
 
   const site = await Site.create(domainName)
+  console.log(site.apiKey)
   global.apiKey = site.apiKey
   await Site.connectWithParent()
 
-  // TO FIX
-  // const emailLanguages = body.language.split(',')
-  // for(const lang of emailLanguages){
-  //   const emails = await Email.retrieve(domainName, lang)
-  //   await Email.set(emails, lang)
+  const emailLanguages = body.language.split(',')
+  for(const lang of emailLanguages){
+    const emails = await Email.retrieve(domainName, lang)
+    await Email.set(emails, lang)
   
-  // }
+  }
   
   const screensets = await Screenset.getAll()
   await Screenset.set(screensets)
@@ -90,41 +93,43 @@ const create = async (environment) => {
     await Socials.set(socials)  
   }
 
-  const copiedBlueprint = await Google.GDrive.makeACopy({ fileId: Google.config.BP })
+  if (global.flags.useGDrive) {
+    const copiedBlueprint = await Google.GDrive.makeACopy({ fileId: Google.config.BP })
 
-  const newFolder = await Google.GDrive.createFolder({
-    name: body.countryCode,
-    parent: Google.config[environment]
-  })
+    const newFolder = await Google.GDrive.createFolder({
+      name: body.countryCode,
+      parent: Google.config[environment]
+    })
 
-  const GSheetfile = await Google.GDrive.renameAndMoveFile({
-    fileId: copiedBlueprint.data.id,
-    newName: `${body.countryCode} - Gigya group management`,
-    parent: newFolder.data.id
-  })
+    const GSheetfile = await Google.GDrive.renameAndMoveFile({
+      fileId: copiedBlueprint.data.id,
+      newName: `${body.countryCode} - Gigya group management`,
+      parent: newFolder.data.id
+    })
 
-  await Google.GSheet.replaceCells({
-    fileId: GSheetfile.data.id,
-    country: {
-      fullname: body.countryFullname,
-      ISOCode: body.countryCode,
-    }
-  })
+    await Google.GSheet.replaceCells({
+      fileId: GSheetfile.data.id,
+      country: {
+        fullname: body.countryFullname,
+        ISOCode: body.countryCode,
+      }
+    })
 
-  const developers = await Google.GSheet.getDevelopers()
+    const developers = await Google.GSheet.getDevelopers()
 
-  await Google.GSheet.addPermissionsToProtectedCells({
-    fileId: GSheetfile.data.id,
-    emails: developers
-  })
+    await Google.GSheet.addPermissionsToProtectedCells({
+      fileId: GSheetfile.data.id,
+      emails: developers
+    })
 
-  await Google.GSheet.addSheetToList({
-    fileId: GSheetfile.data.id,
-    country: {
-      fullname: body.countryFullname,
-      ISOCode: body.countryCode,
-    }
-  })
+    await Google.GSheet.addSheetToList({
+      fileId: GSheetfile.data.id,
+      country: {
+        fullname: body.countryFullname,
+        ISOCode: body.countryCode,
+      }
+    })
+  }
 
   Console.log(`🏆 Congratulations. You did it!\n`)
 

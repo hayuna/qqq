@@ -1,11 +1,18 @@
 import { google } from 'googleapis'
+import config from './config.js'
 import fs from 'fs'
 
-const key = JSON.parse(fs.readFileSync('src/controllers/Google/credentials.json', 'utf-8'))
-
-const auth = new google.auth.JWT(key.client_email, null, key.private_key, [
-    "https://www.googleapis.com/auth/drive"
-])
+let key
+if(!process.env.GOOGLE_PRIVATE_KEY){
+    key = JSON.parse(fs.readFileSync('src/controllers/Google/credentials.json', 'utf-8'))
+}
+ 
+const auth = new google.auth.JWT(
+    config.GOOGLE_SERVICE_ACCOUNT_EMAIL, 
+    null, 
+    process.env.GOOGLE_PRIVATE_KEY || key.private_key, 
+    ["https://www.googleapis.com/auth/drive"]
+)
 
 auth.authorize()
 
