@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - 🐛 Fix Email Templates support
+- 🐛 Fix link to rochesGigya in webSDK for prod
 
 ## [1.9.0] - 2022-03-03
 
