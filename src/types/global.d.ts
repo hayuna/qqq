@@ -1,5 +1,9 @@
 declare global {
-    var body: {
+  var environment: string;
+  namespace NodeJS {
+    interface Global {
+
+    body: {
         dataCenter: string;
         userKey: string;
         secret: string;
@@ -12,12 +16,11 @@ declare global {
         multicountry: boolean;
         purpose: string;
     };
-    var environment: any;
-    var apiKey: string;
+    environment: string;
+    apiKey: string;
+      }
+    }
   }
 
-  declare var body: string;
-  declare var apiKey: string;
-  declare var environment: any;
 
 export { };
