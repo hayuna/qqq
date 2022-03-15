@@ -30,7 +30,11 @@ const WebSDK = {
 
     replaceVariablesInWebSDK(webSDK) {
         Console.log('___ Replacing variables in WebSDK')
-        webSDK = webSDK.replace(`[[ENV]]`, environment.toLowerCase())
+        if(environment.toLowerCase() === 'prod'){
+            webSDK = webSDK.replace(`[[ENV]].`, '')
+        } else {
+            webSDK = webSDK.replace(`[[ENV]]`, environment.toLowerCase())
+        }
         Console.log(`___ ✅ [[ENV]] has been replaced with ${environment.toLowerCase()}`)
         if (Boolean(body.multicountry)) {
             webSDK = webSDK.replace(`[[MULTI_COUNTRY]]`, body.countryCode.toUpperCase())
