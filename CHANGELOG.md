@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - 🛠 Added support for flag to turn on/off GDrive stuff
 - 🛠 Store Google privatekey in repository secrets to avoid downloading whole json with credentials (in the future credentials.json will be deprecated)
+- 🛠 Added support for prod social application. Its retrieving them from existing apikey (prod_eu_ch)
 
 ### Fixed
 - 🐛 Fix Email Templates support

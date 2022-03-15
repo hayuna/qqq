@@ -1,11 +1,18 @@
 import FormData from "form-data";
 import { api } from "../../api.js";
 import config from "../../config.js";
+import { getApikeyForProd } from "../../utils.js";
 
 const Socials = {
     async get(){
         const data = new FormData()
-        data.append('apiKey', config.MASTER_TEMPLATE.apiKey)
+        // for prod, get defaut social apps from prod_eu_ch
+        if(environment.toLowerCase() === 'prod'){
+            const prodApiKey = await getApikeyForProd()
+            data.append('apiKey', prodApiKey)
+        } else {
+            data.append('apiKey', config.MASTER_TEMPLATE.apiKey)
+        }
         data.append('includeSettings', 'true')
         data.append('includeCapabilities', 'true')
         data.append('includeSecretKeys', 'true')

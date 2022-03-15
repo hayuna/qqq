@@ -1,3 +1,7 @@
+import { api } from "./api.js";
+import FormData from 'form-data'
+import config from "./config.js";
+
 export const dataCenterConverter = (dataCenter) => {
     switch(dataCenter) {
         case 'EU': return 'eu1';
@@ -49,4 +53,11 @@ export const setCredentials = (data) => {
 
 export const isRU = () => {
     return body.dataCenter === 'RU'
+}
+
+export const getApikeyForProd = async (name = 'prod_eu_ch') => {
+    const data = new FormData()
+    data.append('targetPartnerID', config.PROD.partnerId)
+    const sites = await api.admin(data, '/admin.console.getPagedUserEffectiveSites', false)
+    return sites.sites.find(site => site.name === name).apiKey
 }

@@ -12,6 +12,16 @@ export const api = {
     let userKey = body.userKey
     let secret = body.secret
 
+    if (url === '/admin.console.getPagedUserEffectiveSites') {
+      dc = 'us1'
+      data.append('targetUserKey', userKey)
+    } else {
+      if (isRU) {
+        secret = body.secretRU
+        userKey = body.userKeyRU
+      }
+    }
+
     // all admin endpoints for RU has dc ru1, but getSiteConfig retrieved from US/EU should have us1
     if (url === '/admin.getSiteConfig') {
       dc = 'us1'

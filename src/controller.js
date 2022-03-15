@@ -87,11 +87,8 @@ const create = async (environment) => {
   await Dataflow.setSchedule(exportDataflow.id)
 
   // Experimental, not confirmed in official docs
-  // SKIP for prod
-  if(environment !== 'PROD'){
     const socials = await Socials.get()
     await Socials.set(socials)  
-  }
 
   if (global.flags.useGDrive) {
     const copiedBlueprint = await Google.GDrive.makeACopy({ fileId: Google.config.BP })
